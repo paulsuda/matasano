@@ -3,26 +3,7 @@
 
 var set1challenge1 = (function($){
 
-  function ChallengeBase(challenge_id){
-    this.challenge_id = challenge_id;
-  }
 
-  ChallengeBase.prototype.run = function(){
-    console.log('run() for ' + this.challenge_id);
-    var e = this.challengeElement();
-    var inp = e.find('.input-field');
-    var out = e.find('.output-field');
-    inp.prop('disabled', true);
-    var i = inp.val();
-    var o = this.compute(i);
-    inp.prop('disabled', false);
-    out.val(o);
-    return o;
-  };
-
-  ChallengeBase.prototype.challengeElement = function(){
-    return $('#' + this.challenge_id);
-  }
 
   function Set1Challenge1(){
     var defaultInput = '49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d';
@@ -45,7 +26,8 @@ var set1challenge1 = (function($){
 
   Set1Challenge1.prototype = Object.create(ChallengeBase.prototype);
 
-  Set1Challenge1.prototype.compute = function(input_data){
+  Set1Challenge1.prototype.compute = function(input_values){
+    var input_data = input_values[0];
     try{
       var decoder = new DecodeHexString(input_data);
       var decoded_data = decoder.decodeAll();
