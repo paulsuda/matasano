@@ -49,7 +49,6 @@ jQuery(function() {
 	app.switch_challenge_by_state();
 });
 
-
 window.onpopstate = function (event) {
 	app.switch_challenge_by_state();
 };
