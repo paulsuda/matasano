@@ -19,17 +19,41 @@
     <!-- endbuild -->
   </head>
   <body>
+    <nav class="top-bar" data-topbar role="navigation">
+      <ul class="title-area">
+        <li class="name"> <h1><a href="#">Paul's Montesano</a></h1> </li>
+        <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+      </ul>
+      <section class="top-bar-section">
+        <!-- Right Nav Section -->
+        <ul class="right">
+          <li class="has-dropdown"><a href="#">Set 1</a>
+            <ul class="dropdown">
+              <li><a href="#set1challenge1">Challenge 1</a></li>
+              <li><a href="#set1challenge2">Challenge 2</a></li>
+            </ul>
+          </li>
+          <li class="has-dropdown"><a href="#">Set 2</a>
+            <ul class="dropdown">
+              <li><a href="#set2challenge1">Challenge 1</a></li>
+              <li><a href="#set2challenge2">Challenge 2</a></li>
+            </ul>
+          </li>
+        </ul> <!-- Left Nav Section -->
+        <ul class="left">
+          <li><a href="http://cryptopals.com/">CryptoPals.com</a></li>
+        </ul>
+      </section>
+    </nav>
 
     <div class="row">
       <div class="small-12 small-centered medium-10 medium-centered columns">
-        <h1>Paul's Montesano</h1>
 
-        <hr>
-        <h4 id="forms">Part 1</h4>
 
         <form id="part-1">
+            <h4 id="forms">Part 1</h4>
             <fieldset>
-                <legend>Input</legend>
+                <legend>Hex Input</legend>
                 <div class="row">
                     <div class="large-12 columns">
                         <label>Input</label>
@@ -38,7 +62,7 @@
                 </div>
             </fieldset>
             <fieldset>
-                <legend>Output</legend>
+                <legend>Base 64 Output</legend>
                 <div class="row">
                     <div class="large-12 columns">
                         <label>output</label>
