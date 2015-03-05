@@ -19,7 +19,7 @@ function EncodeHexString(original_data = ''){
 EncodeHexString.prototype = Object.create(RecodeBase.prototype);
 
 EncodeHexString.prototype.lookup_hex_char = function(value){
-  var char_list = '0123456789ABCDEF';
+  var char_list = '0123456789abcdef';
   return char_list[value];
 };
 

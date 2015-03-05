@@ -26,6 +26,12 @@ var app = (function(document, $) {
 				}
 			}
 		},
+		_switch_challenge_by_state = function(){
+			var hash = window.location.hash;
+			hash = hash.substring(1);
+			if(!hash) hash = 'set1challenge1';
+			app.switch_challenge(hash);
+		},
 		_register_challenge = function(challenge_instance) {
 			var challenge_id = challenge_instance.challenge_id;
 			registeredChallenges[challenge_id] = challenge_instance;
@@ -33,18 +39,17 @@ var app = (function(document, $) {
 	return {
 		init: _init,
 		switch_challenge: _switch_challenge,
-		register_challenge: _register_challenge
+		register_challenge: _register_challenge,
+		switch_challenge_by_state: _switch_challenge_by_state
 	};
 })(document, jQuery);
 
-(function() {
+jQuery(function() {
 	app.init();
-})();
+	app.switch_challenge_by_state();
+});
 
 
 window.onpopstate = function (event) {
-	var hash = window.location.hash;
-	hash = hash.substring(1);
-	if(!hash) hash = 'set1challenge1';
-	app.switch_challenge(hash);
+	app.switch_challenge_by_state();
 };

@@ -23,7 +23,15 @@ ChallengeBase.prototype.run = function(){
   var input_values = input_elem.map(function (i, elem) {
     return $(elem).val();
   });
-  var o = this.compute(input_values);
+  try{
+    var o = this.compute(input_values);
+  }
+  catch(err){
+    console.log("Exception Caught");
+    console.log(err);
+    alert('Exception: ' + err);
+    return '*ERROR*';
+  }
   input_elem.prop('disabled', false);
   output_elem.val(o);
   return o;
