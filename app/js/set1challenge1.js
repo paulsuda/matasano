@@ -15,17 +15,11 @@ app.register_challenge((function($){
 
   Set1Challenge1.prototype.compute = function(input_values){
     var input_data = input_values[0];
-    try{
-      var decoder = new DecodeHexString(input_data);
-      var decoded_data = decoder.decodeAll();
-      var encoder = new EncodeBase64String(decoded_data);
-      var encoder_output = encoder.decodeAll();
-      return encoder_output;
-    }
-    catch(err){
-      alert('Exception: ' + err);
-      return '*ERROR*';
-    }
+    var decoder = new DecodeHexString(input_data);
+    var decoded_data = decoder.decodeAll();
+    var encoder = new EncodeBase64String(decoded_data);
+    var encoder_output = encoder.decodeAll();
+    return encoder_output;
   };
 
   return new Set1Challenge1();
