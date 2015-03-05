@@ -2,6 +2,7 @@
 
 var app = (function(document, $) {
 	var docElem = document.documentElement,
+	  registeredChallenges = {},
 		_userAgentInit = function() {
 			docElem.setAttribute('data-useragent', navigator.userAgent);
 		},
@@ -11,13 +12,23 @@ var app = (function(document, $) {
 		},
 		_switch_challenge = function(challenge_id) {
 			$('.challenge').hide();
-			var challenge_elem = $('#' + challenge_id);
-			if(challenge_elem.length){
-				challenge_elem.show();
+			var challenge_instance = registeredChallenges[challenge_id];
+			if(!challenge_instance){
+				alert('No challenge instance found for: ' + challenge_id);
 			}
 			else{
-				alert('No challenge found for: ' + challenge_id);
+				var challenge_elem = challenge_instance.challengeElement();
+				if(!challenge_elem.length){
+					alert('No challenge element found for: ' + challenge_id);
+				}
+				else{
+					challenge_elem.show();
+				}
 			}
+		},
+		_register_challenge = function(challenge_instance) {
+			var challenge_id = challenge_instance.challenge_id;
+			registeredChallenges[challenge_id] = challenge_instance;
 		};
 	return {
 		init: _init,

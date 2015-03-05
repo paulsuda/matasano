@@ -3,25 +3,12 @@
 
 var set1challenge1 = (function($){
 
-
-
   function Set1Challenge1(){
-    var defaultInput = '49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d';
-    var thisObj = this;
     ChallengeBase.apply(this,['set1challenge1']);
-    console.log('set1challenge1 init...');
-    /* Get the form element and hook submit events. */
-    var e = this.challengeElement();
-    console.log(e)
-    e.submit(function(event){
-      event.preventDefault();
-      console.log('submit')
-      thisObj.run();
-      return false;
-    });
-    /* Disable output display textfield by default. */
-    e.find('.output-field').prop('disabled', true);
-    return e.find('.input-field').val(defaultInput);
+    this.setInputDefaults([
+      '49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d'
+    ]);
+    return this;
   }
 
   Set1Challenge1.prototype = Object.create(ChallengeBase.prototype);
@@ -41,8 +28,5 @@ var set1challenge1 = (function($){
     }
   };
 
-  var c = new Set1Challenge1();
-  console.log('starting s1c1');
-  console.log(c);
-  $(_init);
+  return new Set1Challenge1();
 })(jQuery);
