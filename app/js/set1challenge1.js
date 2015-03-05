@@ -1,14 +1,31 @@
 'use strict';
 
-function DecodeHexString(original_data = ''){
+function RecodeBase(original_data = ''){
   this.buffer = original_data;
 }
 
-DecodeHexString.prototype.decodeAll = function(){
+RecodeBase.prototype.decodeAll = function(){
   var max_count = 99999;
   var all_data = this.nextByte(max_count);
   return all_data;
+};
+
+RecodeBase.prototype.integer_array_to_byte_string = function(integer_array){
+  var thisObj = this;
+  var char_array = _.map(integer_array, function(value, key){
+    return thisObj.map_base64_char(value);
+  });
+  var char_string = char_array.join('');
+  return char_string;
+};
+
+
+function DecodeHexString(original_data = ''){
+  RecodeBase.apply(this,arguments);
 }
+
+DecodeHexString.prototype = Object.create(RecodeBase.prototype);
+
 
 DecodeHexString.prototype.nextByte = function(byte_count = 1){
   this.valid();
@@ -33,15 +50,12 @@ DecodeHexString.prototype.valid = function(){
 };
 
 function EncodeBase64String(original_data = ''){
-  this.buffer = original_data;
+  RecodeBase.apply(this,arguments);
   this.base64map = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 }
 
-EncodeBase64String.prototype.decodeAll = function(){
-  var max_count = 99999;
-  var all_data = this.nextByte(max_count);
-  return all_data;
-};
+EncodeBase64String.prototype = Object.create(RecodeBase.prototype);
+
 
 EncodeBase64String.prototype.map_base64_char = function(value){
   return this.base64map[value];
@@ -57,8 +71,6 @@ EncodeBase64String.prototype.nextByte = function(byte_count = 1){
     this.buffer.charCodeAt(1),
     this.buffer.charCodeAt(2),
     ];
-  console.log('b64 data_values ');
-  console.log(data_values);
   this.buffer = this.buffer.slice(3);
   var return_values = [
     (data_values[0] & 0xfc) >> 2,   /* 6 bits */
@@ -68,22 +80,10 @@ EncodeBase64String.prototype.nextByte = function(byte_count = 1){
       ((data_values[2] & 0xc0) >> 6),      /* ... next 2 bits */
     (data_values[2] & 0x3f)         /* next 6 bits */
   ];
-  console.log('b64 return values ');
-  console.log(return_values);
   var return_value = this.integer_array_to_byte_string(return_values);
   return_value = return_value + this.nextByte(byte_count - 1);
   return return_value;
 };
-
-EncodeBase64String.prototype.integer_array_to_byte_string = function(integer_array){
-  var thisObj = this;
-  var char_array = _.map(integer_array, function(value, key){
-    return thisObj.map_base64_char(value);
-  });
-  var char_string = char_array.join('');
-  return char_string;
-}
-String.fromCharCode
 
 EncodeBase64String.prototype.valid = function(){
   var l = this.buffer.length
