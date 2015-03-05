@@ -1,7 +1,51 @@
 'use strict';
 
+
 var set1challenge1 = (function($){
-  var _compute = function(input_data){
+
+  function ChallengeBase(challenge_id){
+    this.challenge_id = challenge_id;
+  }
+
+  ChallengeBase.prototype.run = function(){
+    console.log('run() for ' + this.challenge_id);
+    var e = this.challengeElement();
+    var inp = e.find('.input-field');
+    var out = e.find('.output-field');
+    inp.prop('disabled', true);
+    var i = inp.val();
+    var o = this.compute(i);
+    inp.prop('disabled', false);
+    out.val(o);
+    return o;
+  };
+
+  ChallengeBase.prototype.challengeElement = function(){
+    return $('#' + this.challenge_id);
+  }
+
+  function Set1Challenge1(){
+    var defaultInput = '49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d';
+    var thisObj = this;
+    ChallengeBase.apply(this,['set1challenge1']);
+    console.log('set1challenge1 init...');
+    /* Get the form element and hook submit events. */
+    var e = this.challengeElement();
+    console.log(e)
+    e.submit(function(event){
+      event.preventDefault();
+      console.log('submit')
+      thisObj.run();
+      return false;
+    });
+    /* Disable output display textfield by default. */
+    e.find('.output-field').prop('disabled', true);
+    return e.find('.input-field').val(defaultInput);
+  }
+
+  Set1Challenge1.prototype = Object.create(ChallengeBase.prototype);
+
+  Set1Challenge1.prototype.compute = function(input_data){
     try{
       var decoder = new DecodeHexString(input_data);
       var decoded_data = decoder.decodeAll();
@@ -15,38 +59,8 @@ var set1challenge1 = (function($){
     }
   };
 
-  var challengeID = '#set1challenge1';
-  var defaultInput = '49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d';
-  var _challengeElement = function(){
-    return $(challengeID);
-  };
-  var _run = function(){
-    console.log('set1challenge1 run...');
-    var e = _challengeElement();
-    var inp = e.find('.input-field');
-    var out = e.find('.output-field');
-    out.val('working...');
-    inp.prop('disabled', true);
-    var i = inp.val();
-    var o = _compute(i);
-    console.log(o);
-    inp.prop('disabled', false);
-    out.val(o);
-    return o;
-  };
-  var _init = function(){
-    console.log('set1challenge1 init...');
-    var e = _challengeElement();
-    console.log(e)
-    e.submit(function(event){
-      event.preventDefault();
-      console.log('submit')
-      _run();
-      return false;
-    });
-    e.find('.output-field').prop('disabled', true);
-    return e.find('.input-field').val(defaultInput);
-  };
+  var c = new Set1Challenge1();
   console.log('starting s1c1');
+  console.log(c);
   $(_init);
 })(jQuery);
