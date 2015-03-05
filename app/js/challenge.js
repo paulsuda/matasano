@@ -1,6 +1,7 @@
 
 function ChallengeBase(challenge_id){
   this.challenge_id = challenge_id;
+  this.last_defaults = [];
   var thisObj = this;
   var e = this.challengeElement();
   /* Disable output display textfield by default. */
@@ -33,6 +34,7 @@ ChallengeBase.prototype.challengeElement = function(){
 };
 
 ChallengeBase.prototype.setInputDefaults = function(default_values){
+  this.last_defaults = default_values;
   var e = this.challengeElement();
   var input_elem = e.find('.input-field');
   return input_elem.map(function (i, elem) {

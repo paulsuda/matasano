@@ -32,7 +32,8 @@ var app = (function(document, $) {
 		};
 	return {
 		init: _init,
-		switch_challenge: _switch_challenge
+		switch_challenge: _switch_challenge,
+		register_challenge: _register_challenge
 	};
 })(document, jQuery);
 
