@@ -1,7 +1,7 @@
 'use strict';
 
 
-app.register_challenge((function($){
+app.register_challenge((function(){
 
   function Set1Challenge1(){
     ChallengeBase.apply(this,['set1challenge1']);
@@ -23,4 +23,4 @@ app.register_challenge((function($){
   };
 
   return new Set1Challenge1();
-})(jQuery));
+})());
