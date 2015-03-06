@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Paul's Matasano Project</title>
+    <title>Paul's Montesano Project</title>
     <!-- build:css css/libraries.min.css -->
     <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css">
     <!-- bower:css -->
@@ -21,7 +21,7 @@
   <body>
     <nav class="top-bar" data-topbar role="navigation">
       <ul class="title-area">
-        <li class="name"> <h1><a href="#">Paul's Matasano</a></h1> </li>
+        <li class="name"> <h1><a href="#">Paul's Montesano</a></h1> </li>
         <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
       </ul>
       <section class="top-bar-section">
