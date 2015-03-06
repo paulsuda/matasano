@@ -21,7 +21,7 @@ app.register_challenge((function($){
     var decoded_data_a = decoder_a.decodeAll();
     var decoder_b = new DecodeHexString(input_data_b);
     var decoded_data_b = decoder_b.decodeAll();
-    var decoder_xor = new DecodeXorStrings(decoded_data_a, decoded_data_b);
+    var decoder_xor = new DecodeXorStrings([decoded_data_a, decoded_data_b]);
     var decoded_data = decoder_xor.decodeAll();
     var encoder = new EncodeHexString(decoded_data);
     var encoder_output = encoder.decodeAll();

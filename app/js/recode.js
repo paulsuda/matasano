@@ -132,9 +132,8 @@ EncodeBase64String.prototype.valid = function(){
 
 ///////////////
 
-function DecodeXorStrings(original_data_a = '', original_data_b = ''){
-  var original_data = [original_data_a, original_data_b];
-  RecodeBase.apply(this,[original_data]);
+function DecodeXorStrings(original_data = ['', '']){
+  RecodeBase.apply(this, arguments);
 }
 
 DecodeXorStrings.prototype = Object.create(RecodeBase.prototype);
