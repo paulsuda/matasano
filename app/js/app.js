@@ -36,12 +36,16 @@ var app = (function(document, $) {
 		_register_challenge = function(challenge_instance) {
 			var challenge_id = challenge_instance.challenge_id;
 			registeredChallenges[challenge_id] = challenge_instance;
+		},
+		_challenge_get = function(challenge_id){
+			return registeredChallenges[challenge_id];
 		};
 	return {
 		init: _init,
 		switch_challenge: _switch_challenge,
 		register_challenge: _register_challenge,
-		switch_challenge_by_state: _switch_challenge_by_state
+		switch_challenge_by_state: _switch_challenge_by_state,
+		challenge_get: _challenge_get
 	};
 })(document, jQuery);
 

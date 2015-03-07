@@ -2,10 +2,11 @@
 function ChallengeBase(challenge_id){
   this.challenge_id = challenge_id;
   this.last_defaults = [];
+  this.log_messages = [];
   var thisObj = this;
   var e = this.challengeElement();
   /* Disable output display textfield by default. */
-  e.find('.output-field').prop('disabled', true);
+  //e.find('.output-field').prop('disabled', true);
   /* Get the form element and hook submit events. */
   e.submit(function(event){
     event.preventDefault();
@@ -22,6 +23,7 @@ ChallengeBase.prototype.runChallenge = function(){
   var output_values = null;
   /* Disable input while computing. */
   input_elem.prop('disabled', true);
+  output_elem.prop('disabled', true);
   /* Get all of our inputs as an ordered list. */
   var input_values = input_elem.map(function (i, elem) {
     return $(elem).val();
@@ -45,7 +47,9 @@ ChallengeBase.prototype.runChallenge = function(){
     return $(elem).val(output_values[i]);
   });
   /* Re enable input. */
+  this.flush_log();
   input_elem.prop('disabled', false);
+  output_elem.prop('disabled', false);
   return output_values;
 };
 
@@ -71,4 +75,65 @@ ChallengeBase.prototype.setInputDefaults = function(default_values){
   return input_elem.map(function (i, elem) {
     return $(elem).val(default_values[i]);
   });
+};
+
+ChallengeBase.prototype.progress_log = function(message){
+  //console.log("progress: " + message);
+  this.log_messages.push(message);
+};
+
+ChallengeBase.prototype.flush_log = function(){
+  if(this.log_messages.length > 0)
+    console.log(this.log_messages.join("\n"));
+  this.log_messages = [];
+};
+
+
+/* * * scoring * * */
+
+/**
+ * Count how many times a regex matches content.
+ */
+ ChallengeBase.prototype.matchCount = function(re, content){
+  var match = re.exec(content);
+  return (match == null) ? 0 : match.length;
+};
+
+/**
+ * Perform a series of tests and return a score higher the more
+ * likely the content is english text.
+ */
+ ChallengeBase.prototype.scoreEnglish = function(content){
+  /* How many times common words appear. */
+  var common_words_list = ['the', 'be', 'to', 'of', 'and'];
+  var common_words_re = new RegExp('\\b(' + common_words_list.join('|') + ')\\b');
+  var common_words_points = (this.matchCount(common_words_re, content) * 40.0);
+  /* Consecutive printable characters. */
+  var printable_re = /([\x20-\x7E]{10}[\x20-\x7E]+)/g;
+  var match = null;
+  var printable_points = 0;
+  var longest_printable = 0;
+  var longest_printable_string = '';
+  do{
+    match = printable_re.exec(content);
+    if(match){
+      var item = match[0];
+      if(longest_printable < item.length){
+        longest_printable_string = item;
+        longest_printable = item.length;
+      }
+      printable_points += (item.length * 2.0);
+    }
+  }while(match != null);
+  longest_printable_points = longest_printable * 100.0;
+  /* How many non-printable characters appear (negative score). */
+  var nonprintable_re = /[^\x20-\x7E]+/g;
+  var nonprintable_points = (this.matchCount(nonprintable_re, content) * 2.0);
+  var points = printable_points + longest_printable_points + common_words_points - nonprintable_points;
+  this.progress_log("SCORE: Words: " + common_words_points +
+    " Printable: " + printable_points +
+    " Nonprintable: " + nonprintable_points +
+    " Longest Printable: " + longest_printable_points + ' "' + longest_printable_string + '"' +
+    " Total: " + points);
+  return points;
 };
