@@ -1,6 +1,7 @@
 'use strict';
 
 var app = (function(document, $) {
+	// TODO, weird format here. Redo?
 	var docElem = document.documentElement,
 	  registeredChallenges = {},
 		_userAgentInit = function() {

@@ -15,16 +15,18 @@ app.register_challenge((function(){
   Set1Challenge2.prototype = Object.create(ChallengeBase.prototype);
 
   Set1Challenge2.prototype.compute = function(input_values){
+    /* Alias func. */
+    var dec = this.decodeAllUsing;
+    /* Two hex inputs. */
     var input_data_a = input_values[0];
     var input_data_b = input_values[1];
-    var decoder_a = new DecodeHexString(input_data_a);
-    var decoded_data_a = decoder_a.decodeAll();
-    var decoder_b = new DecodeHexString(input_data_b);
-    var decoded_data_b = decoder_b.decodeAll();
-    var decoder_xor = new DecodeXorStrings([decoded_data_a, decoded_data_b]);
-    var decoded_data = decoder_xor.decodeAll();
-    var encoder = new EncodeHexString(decoded_data);
-    var encoder_output = encoder.decodeAll();
+    /* Decode hex to strings. */
+    var decoded_data_a = dec(DecodeHexString, input_data_a);
+    var decoded_data_b = dec(DecodeHexString, input_data_b);
+    /* XOR */
+    var decoded_data = dec(DecodeXorStrings, [decoded_data_a, decoded_data_b]);
+    /* Encode as hex for output. */
+    var encoder_output = dec(EncodeHexString, decoded_data);
     return encoder_output;
   };
 

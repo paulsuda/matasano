@@ -5,7 +5,9 @@ function RecodeBase(original_data = ''){
 }
 
 RecodeBase.prototype.decodeAll = function(){
-  var max_count = 999999;
+  /* Set a big number for max to recurse by.  */
+  var max_count = 2**32;
+  /* Call nextByte which will recursively bulid a string */
   var all_data = this.nextByte(max_count);
   return all_data;
 };

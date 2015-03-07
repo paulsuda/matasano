@@ -41,6 +41,12 @@ ChallengeBase.prototype.challengeElement = function(){
   return $('#' + this.challenge_id);
 };
 
+ChallengeBase.prototype.decodeAllUsing = function(decoderClass, input_data){
+  var decoder = new decoderClass(input_data);
+  var decoded_data = decoder.decodeAll();
+  return decoded_data;
+};
+
 ChallengeBase.prototype.setInputDefaults = function(default_values){
   this.last_defaults = default_values;
   var e = this.challengeElement();
