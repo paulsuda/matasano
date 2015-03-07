@@ -15,8 +15,11 @@ app.register_challenge((function(){
 
   Set1Challenge3.prototype.compute = function(input_values){
     var input_data = input_values[0];
-    var decoded_data = (new DecodeHexString(input_data)).decodeAll();
-    return decoded_data;
+    var decoded_data = this.decodeAllUsing(DecodeHexString, input_data);
+    /****/
+    
+    var encoded_data = this.decodeAllUsing(EncodeHexString, decoded_data);
+    return encoded_data;
   };
 
   return new Set1Challenge3();

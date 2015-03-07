@@ -9,13 +9,13 @@ function ChallengeBase(challenge_id){
   /* Get the form element and hook submit events. */
   e.submit(function(event){
     event.preventDefault();
-    thisObj.run();
+    thisObj.runChallenge();
     return false;
   });
 }
 
-ChallengeBase.prototype.run = function(){
-  console.log('run() for ' + this.challenge_id);
+ChallengeBase.prototype.runChallenge = function(){
+  console.log('runChallenge() for ' + this.challenge_id);
   var e = this.challengeElement();
   var input_elem = e.find('.input-field');
   var output_elem = e.find('.output-field');
@@ -24,7 +24,7 @@ ChallengeBase.prototype.run = function(){
     return $(elem).val();
   });
   try{
-    var o = this.compute(input_values);
+    var output_value = this.compute(input_values);
   }
   catch(err){
     console.log("Exception Caught");
@@ -33,8 +33,8 @@ ChallengeBase.prototype.run = function(){
     return '*ERROR*';
   }
   input_elem.prop('disabled', false);
-  output_elem.val(o);
-  return o;
+  output_elem.val(output_value);
+  return output_value;
 };
 
 ChallengeBase.prototype.challengeElement = function(){

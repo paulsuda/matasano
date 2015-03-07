@@ -1,3 +1,6 @@
-## zf5_project
+## paul-matasano-challenge
 
-(place your readme here)
+Doing the [Matasano crypto challenge](http://cryptopals.com) in JavaScript.
+
+To run...
+  grunt

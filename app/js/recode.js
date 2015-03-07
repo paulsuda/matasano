@@ -4,12 +4,42 @@ function RecodeBase(original_data = ''){
   this.buffer = original_data;
 }
 
+/**
+ * Decode the whole buffer into a return string.
+ */
 RecodeBase.prototype.decodeAll = function(){
   /* Set a big number for max to recurse by.  */
-  var max_count = 2**32;
+  var max_count = 999999;
   /* Call nextByte which will recursively bulid a string */
   var all_data = this.nextByte(max_count);
   return all_data;
+};
+
+/**
+ * Decode the next chunk of output, usually a byte, of output.
+ */
+RecodeBase.prototype.nextByte = function(){
+  throw "Function nextByte() needs to be defined by some derived class.";
+};
+
+/**
+ * Test validity of buffer. Should always return true or throw an exception
+ * if the data doesn't fit a valid format.
+ */
+RecodeBase.prototype.valid = function(){
+  throw "Function valid() needs to be defined by some derived class.";
+  // return true;
+};
+
+RecodeBase.prototype.chompByte = function(){
+  var byte_value = this.buffer[0];
+  this.buffer = this.buffer.slice(1);
+  return byte_value;
+};
+
+RecodeBase.prototype.chompByteCode = function(){
+  var byte_code = this.chompByte(this.buffer).charCodeAt(0);
+  return byte_code;
 };
 
 ///////////////
@@ -31,12 +61,11 @@ EncodeHexString.prototype.nextByte = function(byte_count = 1){
   if(this.buffer.length == 0) return "";
   if(byte_count < 1) return "";
   /* Get this byte */
-  var byte_value = this.buffer.charCodeAt(0);
+  var byte_value = this.chompByteCode();
   var hex_values = [
     this.lookup_hex_char(byte_value >> 4),
     this.lookup_hex_char(byte_value & 0x0f)
     ];
-  this.buffer = this.buffer.slice(1)
   /* recurse for the rest of the string... */
   var return_value = hex_values.join('') + this.nextByte(byte_count - 1)
   return return_value;
@@ -60,9 +89,8 @@ DecodeHexString.prototype.nextByte = function(byte_count = 1){
   if(this.buffer.length == 0) return "";
   if(byte_count < 1) return "";
   /* this byte... */
-  var byte_value = parseInt(this.buffer[0], 16) * 16 + parseInt(this.buffer[1], 16);
+  var byte_value = parseInt(this.chompByte(), 16) * 16 + parseInt(this.chompByte(), 16);
   byte_value = String.fromCharCode(byte_value)
-  this.buffer = this.buffer.slice(2)
   /* recurse for the rest of the string... */
   var return_value = byte_value + this.nextByte(byte_count - 1)
   return return_value;
@@ -96,11 +124,10 @@ EncodeBase64String.prototype.nextByte = function(byte_count = 1){
   if(this.buffer.length == 0) return "";
   if(byte_count < 1) return "";
   var data_values = [
-    this.buffer.charCodeAt(0),
-    this.buffer.charCodeAt(1),
-    this.buffer.charCodeAt(2),
+    this.chompByteCode(),
+    this.chompByteCode(),
+    this.chompByteCode(),
     ];
-  this.buffer = this.buffer.slice(3);
   var return_values = [
     (data_values[0] & 0xfc) >> 2,   /* 6 bits */
     ((data_values[0] & 0x03) << 4) +  /* next 2 bits... */

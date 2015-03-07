@@ -1,12 +1,11 @@
 {
   "name": "paul-matasano-challenge",
-  "description": "",
+  "description": "The cryptopals.com challenge in JS",
   "version": "0.0.1",
-  "description": "",
   "homepage": "",
   "author": {
-    "name": "",
-    "email": ""
+    "name": "Paul Suda",
+    "email": "paul@manufaxure.com"
   },
   "repository": {
     "type": "git",
