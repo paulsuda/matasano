@@ -95,8 +95,12 @@ ChallengeBase.prototype.flush_log = function(){
  * Count how many times a regex matches content.
  */
  ChallengeBase.prototype.matchCount = function(re, content){
-  var match = re.exec(content);
-  return (match == null) ? 0 : match.length;
+  var match = null, match_count = 0;
+  if(!re.global) throw "Can't matchCount() with a Regexp that doesn't use the g flag.";
+  while(re.exec(content) != null){
+    match_count += 1;
+  }
+  return match_count;
 };
 
 /**
@@ -106,7 +110,7 @@ ChallengeBase.prototype.flush_log = function(){
  ChallengeBase.prototype.scoreEnglish = function(content){
   /* How many times common words appear. */
   var common_words_list = ['the', 'be', 'to', 'of', 'and'];
-  var common_words_re = new RegExp('\\b(' + common_words_list.join('|') + ')\\b');
+  var common_words_re = new RegExp('\\b(' + common_words_list.join('|') + ')\\b', 'g');
   var common_words_points = (this.matchCount(common_words_re, content) * 40.0);
   /* Consecutive printable characters. */
   var printable_re = /([\x20-\x7E]{10}[\x20-\x7E]+)/g;
@@ -114,17 +118,14 @@ ChallengeBase.prototype.flush_log = function(){
   var printable_points = 0;
   var longest_printable = 0;
   var longest_printable_string = '';
-  do{
-    match = printable_re.exec(content);
-    if(match){
-      var item = match[0];
-      if(longest_printable < item.length){
-        longest_printable_string = item;
-        longest_printable = item.length;
-      }
-      printable_points += (item.length * 2.0);
+  while(match = printable_re.exec(content)){
+    var item = match[0];
+    if(longest_printable < item.length){
+      longest_printable_string = item;
+      longest_printable = item.length;
     }
-  }while(match != null);
+    printable_points += (item.length * 2.0);
+  }
   longest_printable_points = longest_printable * 100.0;
   /* How many non-printable characters appear (negative score). */
   var nonprintable_re = /[^\x20-\x7E]+/g;
