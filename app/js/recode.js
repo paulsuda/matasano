@@ -162,7 +162,10 @@ EncodeBase64String.prototype.valid = function(){
 ///////////////
 
 function DecodeXorStrings(original_data = ['', '']){
-  RecodeBase.apply(this, arguments);
+  if((original_data instanceof Array) && original_data.length == 2)
+    RecodeBase.apply(this, arguments);
+  else
+    throw "Original data must be 2 element array for DecodeXorStrings.";
 }
 
 DecodeXorStrings.prototype = Object.create(RecodeBase.prototype);

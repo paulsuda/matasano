@@ -19,12 +19,16 @@ ChallengeBase.prototype.runChallenge = function(){
   var e = this.challengeElement();
   var input_elem = e.find('.input-field');
   var output_elem = e.find('.output-field');
+  var output_values = null;
+  /* Disable input while computing. */
   input_elem.prop('disabled', true);
+  /* Get all of our inputs as an ordered list. */
   var input_values = input_elem.map(function (i, elem) {
     return $(elem).val();
   });
   try{
-    var output_value = this.compute(input_values);
+    /* Try to compute, with exception handling. */
+    output_values = this.compute(input_values);
   }
   catch(err){
     console.log("Exception Caught");
@@ -32,9 +36,17 @@ ChallengeBase.prototype.runChallenge = function(){
     alert('Exception: ' + err);
     return '*ERROR*';
   }
+  /* Some things don't return a list of output values, so we have to make it one. */
+  if(!(output_values instanceof Array)){
+    output_values = [output_values];
+  }
+  /* Set output */
+  output_elem.map(function (i, elem) {
+    return $(elem).val(output_values[i]);
+  });
+  /* Re enable input. */
   input_elem.prop('disabled', false);
-  output_elem.val(output_value);
-  return output_value;
+  return output_values;
 };
 
 ChallengeBase.prototype.challengeElement = function(){

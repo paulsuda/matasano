@@ -126,7 +126,14 @@
                 <div class="row">
                     <div class="large-12 columns">
                         <label>Input</label>
-                        <textarea name="input" class="input-field"></textarea>
+                        <textarea name="input0" class="input-field"></textarea>
+                    </div>
+                </div>
+                <legend>XOR Key</legend>
+                <div class="row">
+                    <div class="large-4 columns">
+                        <label>Input</label>
+                        <input type="text" name="input1" class="input-field xor-key">
                     </div>
                 </div>
             </fieldset>
@@ -134,16 +141,23 @@
                 <legend>Output</legend>
                 <div class="row">
                     <div class="large-12 columns">
-                        <label>Output</label>
-                        <textarea name="output" class="output-field"></textarea>
+                        <label>Hex Output</label>
+                        <textarea name="output0" class="output-field"></textarea>
+                    </div>
+                    <div class="large-12 columns">
+                        <label>Raw Output</label>
+                        <textarea name="output1" class="output-field"></textarea>
                     </div>
                 </div>
             </fieldset>
             <fieldset>
                 <legend>Action</legend>
                 <div class="row">
-                    <div class="large-12 columns">
+                    <div class="large-6 columns">
                         <input class="button submit" value="Submit" type="submit">
+                    </div>
+                    <div class="large-4 columns">
+                        <input class="button success button-auto right" value="Auto" type="submit">
                     </div>
                 </div>
             </fieldset>
