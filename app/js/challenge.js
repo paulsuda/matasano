@@ -49,6 +49,11 @@ ChallengeBase.prototype.runChallenge = function(){
   return output_values;
 };
 
+ChallengeBase.prototype.compute = function(input_values){
+  throw "ChallengeBase compute() called. Should be called by derived class.";
+  // return [result_data];
+};
+
 ChallengeBase.prototype.challengeElement = function(){
   return $('#' + this.challenge_id);
 };
