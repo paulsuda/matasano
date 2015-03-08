@@ -21,7 +21,7 @@ ChallengeXORBase.prototype.setupScanButton = function(){
 };
 
 ChallengeXORBase.prototype.compute = function(input_values){
-  var input_data = input_values[0];
+  var input_data = this.decodeAllUsing(StripWhitespace, input_values[0]);
   var input_key = parseInt(input_values[1]);
   if(input_key < 0 || input_key > 255){
     throw "Invalid key value " + input_key;
@@ -34,11 +34,8 @@ ChallengeXORBase.prototype.compute = function(input_values){
   return [encoded_data, decrypted_data];
 };
 
-ChallengeXORBase.prototype.autoScan = function(){
-  var e = this.challengeElement();
-  var i, best_score = 0, best_key = null, el = e.find('.input-field.xor-key');
-  //el.prop('disabled', true);
-  var input_data = this.challengeElement().find('.input-field:first').val();
+ChallengeXORBase.prototype.autoScanData = function(input_data){
+  var i, best_score = 0, best_key = null, best_output = null;
   /* Try all 8 bit keys... */
   for(i = 0; i < 256; i++){
     /* ... set inputs and run the challenge. */
@@ -46,14 +43,27 @@ ChallengeXORBase.prototype.autoScan = function(){
     /* ... score the output as english text, record results. */
     var score = this.scoreEnglish.getScore(output_values[1]);
     /* Log all scorer logs, and our test results. */
-    this.log_messages = this.log_messages.concat(this.scoreEnglish.flushLog());
+    this.log_messages = this.log_messages.concat(this.scoreEnglish.flushLog(false));
     this.progressLog("TEST: Key " + i + " scored " + score);
     if(best_score < score){
+      best_output = output_values[1];
       best_score = score;
       best_key = i;
     }
   }
-  //el.prop('disabled', false);
-  this.progressLog("RESULT: Best key " + best_key + " scored " + best_score);
-  el.val(best_key);
+  return {
+    best_output: best_output,
+    input_data: input_data,
+    best_key: best_key,
+    best_score: best_score
+  };
+};
+
+ChallengeXORBase.prototype.autoScan = function(){
+  var e = this.challengeElement();
+  var el = e.find('.input-field.xor-key');
+  var input_data = this.challengeElement().find('.input-field:first').val();
+  var scan_result = this.autoScanData(input_data);
+  this.progressLog("RESULT: Best key " + scan_result.best_key + " scored " + scan_result.best_score);
+  el.val(scan_result.best_key);
 };
