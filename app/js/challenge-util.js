@@ -2,6 +2,7 @@
 function ChallengeXORBase(challenge_id){
   ChallengeBase.apply(this,arguments);
   this.setupScanButton();
+  this.scoreEnglish = new ScoreEnglish();
 }
 
 ChallengeXORBase.prototype = Object.create(ChallengeBase.prototype);
@@ -43,14 +44,16 @@ ChallengeXORBase.prototype.autoScan = function(){
     /* ... set inputs and run the challenge. */
     var output_values = this.compute([input_data, i]);
     /* ... score the output as english text, record results. */
-    var score = this.scoreEnglish(output_values[1]);
-    this.progress_log("TEST: Key " + i + " scored " + score);
+    var score = this.scoreEnglish.getScore(output_values[1]);
+    /* Log all scorer logs, and our test results. */
+    this.log_messages = this.log_messages.concat(this.scoreEnglish.flushLog());
+    this.progressLog("TEST: Key " + i + " scored " + score);
     if(best_score < score){
       best_score = score;
       best_key = i;
     }
   }
   //el.prop('disabled', false);
-  this.progress_log("RESULT: Best key " + best_key + " scored " + best_score);
+  this.progressLog("RESULT: Best key " + best_key + " scored " + best_score);
   el.val(best_key);
 };

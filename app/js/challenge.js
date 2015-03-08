@@ -1,3 +1,4 @@
+'use strict';
 
 function ChallengeBase(challenge_id){
   this.challenge_id = challenge_id;
@@ -47,7 +48,7 @@ ChallengeBase.prototype.runChallenge = function(){
     return $(elem).val(output_values[i]);
   });
   /* Re enable input. */
-  this.flush_log();
+  this.flushLog();
   input_elem.prop('disabled', false);
   output_elem.prop('disabled', false);
   return output_values;
@@ -77,64 +78,15 @@ ChallengeBase.prototype.setInputDefaults = function(default_values){
   });
 };
 
-ChallengeBase.prototype.progress_log = function(message){
+ChallengeBase.prototype.progressLog = function(message){
   //console.log("progress: " + message);
   this.log_messages.push(message);
 };
 
-ChallengeBase.prototype.flush_log = function(){
-  if(this.log_messages.length > 0)
-    console.log(this.log_messages.join("\n"));
+ChallengeBase.prototype.flushLog = function(show = true){
+  var messages = this.log_messages;
+  if(show && (messages.length > 0))
+    console.log(messages.join("\n"));
   this.log_messages = [];
-};
-
-
-/* * * scoring * * */
-
-/**
- * Count how many times a regex matches content.
- */
- ChallengeBase.prototype.matchCount = function(re, content){
-  var match = null, match_count = 0;
-  if(!re.global) throw "Can't matchCount() with a Regexp that doesn't use the g flag.";
-  while(re.exec(content) != null){
-    match_count += 1;
-  }
-  return match_count;
-};
-
-/**
- * Perform a series of tests and return a score higher the more
- * likely the content is english text.
- */
- ChallengeBase.prototype.scoreEnglish = function(content){
-  /* How many times common words appear. */
-  var common_words_list = ['the', 'be', 'to', 'of', 'and'];
-  var common_words_re = new RegExp('\\b(' + common_words_list.join('|') + ')\\b', 'g');
-  var common_words_points = (this.matchCount(common_words_re, content) * 40.0);
-  /* Consecutive printable characters. */
-  var printable_re = /([\x20-\x7E]{10}[\x20-\x7E]+)/g;
-  var match = null;
-  var printable_points = 0;
-  var longest_printable = 0;
-  var longest_printable_string = '';
-  while(match = printable_re.exec(content)){
-    var item = match[0];
-    if(longest_printable < item.length){
-      longest_printable_string = item;
-      longest_printable = item.length;
-    }
-    printable_points += (item.length * 2.0);
-  }
-  longest_printable_points = longest_printable * 100.0;
-  /* How many non-printable characters appear (negative score). */
-  var nonprintable_re = /[^\x20-\x7E]+/g;
-  var nonprintable_points = (this.matchCount(nonprintable_re, content) * 2.0);
-  var points = printable_points + longest_printable_points + common_words_points - nonprintable_points;
-  this.progress_log("SCORE: Words: " + common_words_points +
-    " Printable: " + printable_points +
-    " Nonprintable: " + nonprintable_points +
-    " Longest Printable: " + longest_printable_points + ' "' + longest_printable_string + '"' +
-    " Total: " + points);
-  return points;
+  return messages;s
 };

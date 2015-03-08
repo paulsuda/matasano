@@ -1,6 +1,5 @@
 'use strict';
 
-
 app.register_challenge((function(){
 
   function Set1Challenge1(){
