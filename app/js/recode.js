@@ -38,9 +38,44 @@ RecodeBase.prototype.chompByte = function(){
 };
 
 RecodeBase.prototype.chompByteCode = function(){
-  var byte_code = this.chompByte(this.buffer).charCodeAt(0);
+  var byte_code = this.chompByte().charCodeAt(0);
   return byte_code;
 };
+
+
+///////////////
+
+function TwoBufferRecodeBase(original_data = ['', '']){
+  if((original_data instanceof Array) && original_data.length == 2)
+    return RecodeBase.apply(this,arguments);
+  else
+    throw "Original data must be 2 element array for TwoBufferRecodeBase.";
+}
+
+TwoBufferRecodeBase.prototype = Object.create(RecodeBase.prototype);
+
+TwoBufferRecodeBase.prototype.chompByte = function(){
+  var byte_values = [this.buffer[0][0], this.buffer[1][0]];
+  this.buffer[0] = this.buffer[0].slice(1);
+  this.buffer[1] = this.buffer[1].slice(1);
+  return byte_values;
+};
+
+TwoBufferRecodeBase.prototype.chompByteCode = function(){
+  var bytes = this.chompByte();
+  var byte_codes = _.map(bytes, function(item) {
+    return item.charCodeAt(0);
+  });
+  return byte_codes;
+};
+
+TwoBufferRecodeBase.prototype.validateEqualBufferLength = function(){
+  if(this.buffer[0].length != this.buffer[1].length){
+    throw "Invalid string lengths " + this.buffer[0].length +
+      " and " + this.buffer[1].length + ".";
+  }
+  return;
+}
 
 
 ///////////////
@@ -107,15 +142,6 @@ DecodeHexString.prototype.valid = function(){
 
 ///////////////
 
-function TwoBufferRecodeBase(original_data = ['', '']){
-  if((original_data instanceof Array) && original_data.length == 2)
-    return RecodeBase.apply(this,arguments);
-  else
-    throw "Original data must be 2 element array for TwoBufferRecodeBase.";
-}
-
-TwoBufferRecodeBase.prototype = Object.create(RecodeBase.prototype);
-///////////////
 
 function EncodeBase64String(original_data = ''){
   RecodeBase.apply(this,arguments);
@@ -202,8 +228,37 @@ StripWhitespace.prototype.nextByte = function(byte_count = 1){
 ///////////////
 
 function HammingDistance(original_data = ['', '']){
-
+  return TwoBufferRecodeBase.apply(this, arguments);
 }
+
+HammingDistance.prototype = Object.create(TwoBufferRecodeBase.prototype);
+
+/**
+ * Returns an integer hamming distance.
+ * 'this is a test' and 'wokka wokka!!!' return 37
+ */
+HammingDistance.prototype.nextByte = function(byte_count = 1){
+  this.valid();
+  /* base cases... */
+  if(this.buffer[0].length == 0) return 0;
+  if(byte_count < 1) return 0;
+  /* Trim one byte off each buffer */
+  var data_values = this.chompByteCode();
+  /* Perform XOR. */
+  var xor_value = (data_values[0] ^ data_values[1]);
+  var hamming_distance = 0;
+  var i;
+  for(i = 0; i < 8; i++){
+    hamming_distance += (xor_value >> i) & 1
+  }
+  /* Recurse for more data. */
+  var return_value = hamming_distance + this.nextByte(byte_count - 1);
+  return return_value;
+};
+
+HammingDistance.prototype.valid = function(){
+  return this.validateEqualBufferLength();
+};
 
 ///////////////
 
@@ -219,12 +274,7 @@ DecodeXorStrings.prototype.nextByte = function(byte_count = 1){
   if(this.buffer[0].length == 0) return "";
   if(byte_count < 1) return "";
   /* Trim one byte off each buffer */
-  var data_values = [
-    this.buffer[0].charCodeAt(0),
-    this.buffer[1].charCodeAt(0)
-    ];
-  this.buffer[0] = this.buffer[0].slice(1);
-  this.buffer[1] = this.buffer[1].slice(1);
+  var data_values = this.chompByteCode();
   /* Perform XOR. */
   var byte_value = (data_values[0] ^ data_values[1]);
   byte_value = String.fromCharCode(byte_value);
@@ -234,9 +284,5 @@ DecodeXorStrings.prototype.nextByte = function(byte_count = 1){
 };
 
 DecodeXorStrings.prototype.valid = function(){
-  if(this.buffer[0].length != this.buffer[1].length){
-    throw "Invalid string lengths " + this.buffer[0].length +
-      " and " + this.buffer[1].length + ".";
-  }
-  return true;
+  return this.validateEqualBufferLength();
 };
