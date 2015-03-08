@@ -5,9 +5,9 @@ function ScoreEnglish(){
   this.log_messages = [];
   this.common_words_list = null;
   this.weights = {
-    common_words: 40.0,
+    common_words: 100.0,
     non_printable: -2.0,
-    longest_printable: 100.0,
+    longest_printable: 2.0,
     printable: 2.0,
   };
   this.commonWordsInit();

@@ -34,7 +34,7 @@ app.register_challenge((function(){
     var thisObj = this;
     var key_results = {};
     /* Scan each input and find best key along with score. */
-    hex_list = hex_list.slice(0, 4);
+    hex_list = hex_list.slice(0, 500);
     _.each(hex_list, function(hex_item, index){
       /* Get score for this snippet, don't do extensive logging..  */
       var save_log = thisObj.log_messages;
