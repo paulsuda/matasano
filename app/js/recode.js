@@ -42,6 +42,7 @@ RecodeBase.prototype.chompByteCode = function(){
   return byte_code;
 };
 
+
 ///////////////
 
 function EncodeHexString(original_data = ''){
@@ -104,6 +105,16 @@ DecodeHexString.prototype.valid = function(){
   return true;
 };
 
+///////////////
+
+function TwoBufferRecodeBase(original_data = ['', '']){
+  if((original_data instanceof Array) && original_data.length == 2)
+    return RecodeBase.apply(this,arguments);
+  else
+    throw "Original data must be 2 element array for TwoBufferRecodeBase.";
+}
+
+TwoBufferRecodeBase.prototype = Object.create(RecodeBase.prototype);
 ///////////////
 
 function EncodeBase64String(original_data = ''){
@@ -190,14 +201,17 @@ StripWhitespace.prototype.nextByte = function(byte_count = 1){
 
 ///////////////
 
-function DecodeXorStrings(original_data = ['', '']){
-  if((original_data instanceof Array) && original_data.length == 2)
-    RecodeBase.apply(this, arguments);
-  else
-    throw "Original data must be 2 element array for DecodeXorStrings.";
+function HammingDistance(original_data = ['', '']){
+
 }
 
-DecodeXorStrings.prototype = Object.create(RecodeBase.prototype);
+///////////////
+
+function DecodeXorStrings(original_data = ['', '']){
+  return TwoBufferRecodeBase.apply(this, arguments);
+}
+
+DecodeXorStrings.prototype = Object.create(TwoBufferRecodeBase.prototype);
 
 DecodeXorStrings.prototype.nextByte = function(byte_count = 1){
   this.valid();
