@@ -30,9 +30,11 @@ ScoreEnglish.prototype.cacheLongWordList = function(common_words_list){
  */
 ScoreEnglish.prototype.commonWordsInit = function(){
 //  this.common_words_list =  ['the', 'be', 'to', 'of', 'and']; return;
+  if(ScoreEnglish.long_word_list != null) return ScoreEnglish.long_word_list;
   var comment_re = /^#+.*/;
   var thisObj = this;
   var word_list_limit = 1000;
+  ScoreEnglish.long_word_list = {};
   console.log('Getting score words list');
   $.get('/example_data/english-words-by-freq.txt', function(word_list){
     console.log('Got list');
@@ -63,8 +65,9 @@ ScoreEnglish.prototype.matchCount = function(re, content){
 };
 
 ScoreEnglish.prototype.getCommonWordsRE = function(){
-  if(ScoreEnglish.long_word_list == null) throw "ScoreEnglish.long_word_list not initialized yet.";
-  return ScoreEnglish.long_word_list.regex;
+  if(ScoreEnglish.long_word_list.regex instanceof RegExp)
+    return ScoreEnglish.long_word_list.regex;
+  throw "ScoreEnglish.long_word_list not initialized yet.";
 };
 
 /**
