@@ -1,6 +1,5 @@
 'use strict';
-
-app.register_challenge((function(){
+define(['app'], function(app){
 
   function Set1Challenge1(){
     ChallengeBase.apply(this,['set1challenge1']);
@@ -20,5 +19,6 @@ app.register_challenge((function(){
     return encoder_output;
   };
 
-  return new Set1Challenge1();
-})());
+  return Set1Challenge1;
+
+});
