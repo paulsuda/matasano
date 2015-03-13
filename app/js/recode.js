@@ -46,7 +46,7 @@ RecodeBase.prototype.chompByteCode = function(){
 ///////////////
 
 function TwoBufferRecodeBase(original_data = ['', '']){
-  if((original_data instanceof Array) && original_data.length == 2)
+  if(original_data.length == 2)
     return RecodeBase.apply(this,arguments);
   else
     throw "Original data must be 2 element array for TwoBufferRecodeBase.";
