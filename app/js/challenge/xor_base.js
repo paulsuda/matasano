@@ -1,6 +1,7 @@
 'use strict'
 
-define(['challenge/base'], function(ChallengeBase){
+define(['challenge/base', 'scoring/english', 'recode/strip_whitespace', 'decode/hex', 'encode/hex', 'recode/xor'],
+  function(ChallengeBase, ScoreEnglish, StripWhitespace, DecodeHexString, EncodeHexString, DecodeXorStrings){
 
   function ChallengeXORBase(challenge_id){
     ChallengeBase.apply(this,arguments);

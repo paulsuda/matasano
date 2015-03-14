@@ -1,6 +1,7 @@
 'use strict';
 
-define(['jquery', 'foundation', 'challenge/1'], function(jQuery, foundation, Set1Challenge1){
+define(['jquery', 'foundation', 'challenge/1', 'challenge/2', 'challenge/3', 'challenge/4', 'challenge/5', 'challenge/6'],
+  function(jQuery, foundation, Set1Challenge1, Set1Challenge2, Set1Challenge3, Set1Challenge4, Set1Challenge5, Set1Challenge6){
 
 	var app = (function(document, $) {
 		// TODO, weird format here. Redo?
@@ -53,6 +54,11 @@ define(['jquery', 'foundation', 'challenge/1'], function(jQuery, foundation, Set
 	})(document, jQuery);
 
 	app.register_challenge(new Set1Challenge1());
+	app.register_challenge(new Set1Challenge2());
+	app.register_challenge(new Set1Challenge3());
+	app.register_challenge(new Set1Challenge4());
+	app.register_challenge(new Set1Challenge5());
+	app.register_challenge(new Set1Challenge6());
 
 	window.onpopstate = function (event) {
 		app.switch_challenge_by_state();

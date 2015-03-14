@@ -1,7 +1,7 @@
 'use strict';
 
-define(['app', 'challenge/base', 'decode/hex', 'encode/base64'],
-  function(app, ChallengeBase, DecodeHexString, EncodeBase64String){
+define(['challenge/base', 'decode/hex', 'encode/base64'],
+  function(ChallengeBase, DecodeHexString, EncodeBase64String){
 
   function Challenge1(){
     ChallengeBase.apply(this,['set1challenge1']);
