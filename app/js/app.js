@@ -1,6 +1,6 @@
 'use strict';
 
-define(['jquery', 'foundation', 'set1challenge1'], function(jQuery, foundation, Set1Challenge1){
+define(['jquery', 'foundation', 'challenge/1'], function(jQuery, foundation, Set1Challenge1){
 
 	var app = (function(document, $) {
 		// TODO, weird format here. Redo?
@@ -18,6 +18,7 @@ define(['jquery', 'foundation', 'set1challenge1'], function(jQuery, foundation, 
 				var challenge_instance = registeredChallenges[challenge_id];
 				if(!challenge_instance){
 					alert('No challenge instance found for: ' + challenge_id);
+					console.log(registeredChallenges);
 				}
 				else{
 					var challenge_elem = challenge_instance.challengeElement();
@@ -37,6 +38,7 @@ define(['jquery', 'foundation', 'set1challenge1'], function(jQuery, foundation, 
 			},
 			_register_challenge = function(challenge_instance) {
 				var challenge_id = challenge_instance.challenge_id;
+				challenge_id = challenge_id.toLowerCase();
 				registeredChallenges[challenge_id] = challenge_instance;
 			},
 			_challenge_get = function(challenge_id){
