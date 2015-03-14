@@ -18,7 +18,6 @@ define(['jquery', 'foundation', 'challenge/1'], function(jQuery, foundation, Set
 				var challenge_instance = registeredChallenges[challenge_id];
 				if(!challenge_instance){
 					alert('No challenge instance found for: ' + challenge_id);
-					console.log(registeredChallenges);
 				}
 				else{
 					var challenge_elem = challenge_instance.challengeElement();

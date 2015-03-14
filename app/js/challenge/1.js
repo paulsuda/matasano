@@ -1,5 +1,7 @@
 'use strict';
-define(['app', 'challenge/base'], function(app, ChallengeBase){
+
+define(['app', 'challenge/base', 'decode/hex', 'encode/base64'],
+  function(app, ChallengeBase, DecodeHexString, EncodeBase64String){
 
   function Challenge1(){
     ChallengeBase.apply(this,['set1challenge1']);
@@ -18,8 +20,6 @@ define(['app', 'challenge/base'], function(app, ChallengeBase){
     var encoder_output = this.decodeAllUsing(EncodeBase64String, decoded_data);
     return encoder_output;
   };
-
-console.log('1.js');
 
   return Challenge1;
 

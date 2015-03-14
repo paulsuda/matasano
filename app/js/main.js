@@ -1,7 +1,5 @@
 'use strict';
 
-console.log('main.js');
-
 requirejs.config({
 
     //By default load any module IDs from js/lib
@@ -58,7 +56,6 @@ requirejs.config({
 requirejs(['jquery', 'app'], function($, app) {
 
 	$(function() {
-		console.log('jq init');
 		app.init();
 		app.switch_challenge_by_state();
 	});

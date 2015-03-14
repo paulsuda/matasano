@@ -14,7 +14,6 @@ app.register_challenge((function(){
   Set1Challenge6.prototype = Object.create(ChallengeBase.prototype);
 
   Set1Challenge6.prototype.compute = function(input_values){
-    console.log(input_values);
     var encoder_output = this.decodeAllUsing(HammingDistance, input_values);
     return encoder_output;
   };
