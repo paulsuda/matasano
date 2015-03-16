@@ -2,17 +2,17 @@
 
 define(['recode/two_buffer_base'], function(TwoBufferRecodeBase){
 
-  function HammingDistance(original_data = ['', '']){
+  function ScoreHammingDistance(original_data = ['', '']){
     return TwoBufferRecodeBase.apply(this, arguments);
   }
 
-  HammingDistance.prototype = Object.create(TwoBufferRecodeBase.prototype);
+  ScoreHammingDistance.prototype = Object.create(TwoBufferRecodeBase.prototype);
 
   /**
    * Returns an integer hamming distance.
    * 'this is a test' and 'wokka wokka!!!' return 37
    */
-  HammingDistance.prototype.nextByte = function(byte_count = 1){
+  ScoreHammingDistance.prototype.nextByte = function(byte_count = 1){
     this.valid();
     /* base cases... */
     if(this.buffer[0].length == 0) return 0;
@@ -31,10 +31,10 @@ define(['recode/two_buffer_base'], function(TwoBufferRecodeBase){
     return return_value;
   };
 
-  HammingDistance.prototype.valid = function(){
+  ScoreHammingDistance.prototype.valid = function(){
     return this.validateEqualBufferLength();
   };
 
-  return HammingDistance;
+  return ScoreHammingDistance;
 
 });
