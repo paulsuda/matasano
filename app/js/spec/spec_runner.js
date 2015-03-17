@@ -1,5 +1,7 @@
 'use strict';
 
+	    console.log('spec runner load');
+
 require([
   'jquery',
   'jasmine',
@@ -9,6 +11,8 @@ require([
   'spec/scoring/hamming_distance_spec',
 ],
 function($, jasmine) {
+
+	    console.log('spec runner');
 
   var jasmineEnv = jasmine.getEnv();
   jasmineEnv.updateInterval = 1000;
@@ -25,3 +29,4 @@ function($, jasmine) {
   });
 
 });
+
