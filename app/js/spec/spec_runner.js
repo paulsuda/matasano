@@ -1,6 +1,7 @@
 'use strict';
 
-	    console.log('spec runner load');
+// Getting requirejs and jasmine to work together is not easy.
+// http://stackoverflow.com/questions/19240302/does-jasmine-2-0-really-not-work-with-require-js
 
 require([
   'jquery',
@@ -13,26 +14,8 @@ function($, jasmine, jasmine_boot, jasmine_html) {
 		'spec/scoring/hamming_distance_spec',
   ];
 
-  console.log('spec runner');
-
   require(specs_list, function(){
 		window.onload();
-
-		// var jasmineEnv = jasmine.getEnv();
-		// jasmineEnv.updateInterval = 1000;
-		//
-		// var htmlReporter = new jasmine.HtmlReporter();
-		// jasmineEnv.addReporter(htmlReporter);
-		//
-		// jasmineEnv.specFilter = function(spec) {
-		// 	return htmlReporter.specFilter(spec);
-		// };
-		//
-		// $(function () {
-		// 	jasmine.getEnv().execute();
-		// });
 	});
-
-
 
 });

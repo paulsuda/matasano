@@ -15,7 +15,7 @@ var requirejs = {
       'jasmine': '../bower_components/jasmine/lib/jasmine-core/jasmine',
       'jasmine-html': '../bower_components/jasmine/lib/jasmine-core/jasmine-html',
       'boot': '../bower_components/jasmine/lib/jasmine-core/boot',
-//      'jasmine-jquery': '../bower_components/jasmine-jquery/lib/jasmine-jquery',
+      //'jasmine-jquery': '../bower_components/jasmine-jquery/lib/jasmine-jquery',
 
 			/* Foundation stuff, from http://foundation.zurb.com/forum/posts/18248-requirejs-with-foundation-5 */
 			"foundation": '../bower_components/foundation/js/foundation',
@@ -36,6 +36,7 @@ var requirejs = {
 	    "foundation.toolbar": '../bower_components/foundation/js/foundation/foundation.toolbar',
 	    "foundation.topbar": '../bower_components/foundation/js/foundation/foundation.topbar'
     },
+    
 		shim: {
 			"jquery.cookie": ['jquery'],
 			"foundation": ['jquery', 'fastclick'],
@@ -52,8 +53,6 @@ var requirejs = {
         deps: ['jasmine', 'jasmine-html'],
         exports: 'window.jasmineRequire'
       },
-
-
 
 			/* Foundation stuff, from http://foundation.zurb.com/forum/posts/18248-requirejs-with-foundation-5 */
 			"foundation.abide": ['foundation'],
@@ -72,8 +71,6 @@ var requirejs = {
 			"foundation.tab": ['foundation'],
 			"foundation.toolbar": ['foundation'],
 			"foundation.topbar": ['foundation'],
-
-
 
 		}
 };
