@@ -1,12 +1,12 @@
 'use strict'
 
-define(['challenge/base', 'scoring/english', 'recode/strip_whitespace', 'decode/hex', 'encode/hex', 'recode/xor'],
-  function(ChallengeBase, ScoreEnglish, StripWhitespace, DecodeHexString, EncodeHexString, DecodeXorStrings){
+define(['challenge/base', 'scoring/english_words', 'recode/strip_whitespace', 'decode/hex', 'encode/hex', 'recode/xor'],
+  function(ChallengeBase, ScoreEnglishWords, StripWhitespace, DecodeHexString, EncodeHexString, DecodeXorStrings){
 
   function ChallengeXORBase(challenge_id){
     ChallengeBase.apply(this,arguments);
     this.setupScanButton();
-    this.scoreEnglish = new ScoreEnglish();
+    this.scoreEnglish = new ScoreEnglishWords();
   }
 
   ChallengeXORBase.prototype = Object.create(ChallengeBase.prototype);

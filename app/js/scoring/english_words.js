@@ -2,7 +2,7 @@
 
 define([], function(){
 
-  function ScoreEnglish(){
+  function ScoreEnglishWords(){
     this.log_messages = [];
     this.common_words_list = null;
     this.weights = {
@@ -14,13 +14,13 @@ define([], function(){
     this.commonWordsInit();
   }
 
-  ScoreEnglish.long_word_list = null;
+  ScoreEnglishWords.long_word_list = null;
 
   /**
    * Cache this instance's word list.
    */
-  ScoreEnglish.prototype.cacheLongWordList = function(common_words_list){
-    ScoreEnglish.long_word_list = {
+  ScoreEnglishWords.prototype.cacheLongWordList = function(common_words_list){
+    ScoreEnglishWords.long_word_list = {
       list: common_words_list,
       regex: new RegExp('\\b(' + common_words_list.join('|') + ')\\b', 'ig')
     };
@@ -29,13 +29,13 @@ define([], function(){
   /**
    * Load up a list of frequently used english language words from a text file.
    */
-  ScoreEnglish.prototype.commonWordsInit = function(){
+  ScoreEnglishWords.prototype.commonWordsInit = function(){
   //  this.common_words_list =  ['the', 'be', 'to', 'of', 'and']; return;
-    if(ScoreEnglish.long_word_list != null) return ScoreEnglish.long_word_list;
+    if(ScoreEnglishWords.long_word_list != null) return ScoreEnglishWords.long_word_list;
     var comment_re = /^#+.*/;
     var thisObj = this;
     var word_list_limit = 1000;
-    ScoreEnglish.long_word_list = {};
+    ScoreEnglishWords.long_word_list = {};
     console.log('Getting score words list');
     $.get('/example_data/english-words-by-freq.txt', function(word_list){
       console.log('Got list');
@@ -48,7 +48,7 @@ define([], function(){
       });
       word_list = word_list.slice(0, word_list_limit);
       //thisObj.progressLog
-      console.log('ScoreEnglish imported ' + word_list.length + ' words.');
+      console.log('ScoreEnglishWords imported ' + word_list.length + ' words.');
       thisObj.cacheLongWordList(word_list);
     });
   };
@@ -56,7 +56,7 @@ define([], function(){
   /**
    * Count how many times a regex matches content.
    */
-  ScoreEnglish.prototype.matchCount = function(re, content){
+  ScoreEnglishWords.prototype.matchCount = function(re, content){
     var match = null, match_count = 0;
     if(!re.global) throw "Can't matchCount() with a Regexp that doesn't use the g flag.";
     while(re.exec(content) != null){
@@ -65,17 +65,17 @@ define([], function(){
     return match_count;
   };
 
-  ScoreEnglish.prototype.getCommonWordsRE = function(){
-    if(ScoreEnglish.long_word_list.regex instanceof RegExp)
-      return ScoreEnglish.long_word_list.regex;
-    throw "ScoreEnglish.long_word_list not initialized yet.";
+  ScoreEnglishWords.prototype.getCommonWordsRE = function(){
+    if(ScoreEnglishWords.long_word_list.regex instanceof RegExp)
+      return ScoreEnglishWords.long_word_list.regex;
+    throw "ScoreEnglishWords.long_word_list not initialized yet.";
   };
 
   /**
    * Perform a series of tests and return a score higher the more
    * likely the content is english text.
    */
-  ScoreEnglish.prototype.getScore = function(content){
+  ScoreEnglishWords.prototype.getScore = function(content){
     var scores = {};
     /* How many times common words appear. */
     var common_words_re = this.getCommonWordsRE();
@@ -112,12 +112,12 @@ define([], function(){
   /**
    * Log scoring messages.
    */
-  ScoreEnglish.prototype.progressLog = function(message){
+  ScoreEnglishWords.prototype.progressLog = function(message){
     //console.log("progress: " + message);
     this.log_messages.push(message);
   };
 
-  ScoreEnglish.prototype.flushLog = function(show = true){
+  ScoreEnglishWords.prototype.flushLog = function(show = true){
     var messages = this.log_messages;
     if(show && (messages.length > 0))
       console.log(messages.join("\n"));
@@ -125,5 +125,5 @@ define([], function(){
     return messages;
   };
 
-  return ScoreEnglish;
+  return ScoreEnglishWords;
 });
