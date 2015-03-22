@@ -14,7 +14,8 @@ var requirejs = {
       /* Testing stuff. */
       'jasmine': '../bower_components/jasmine/lib/jasmine-core/jasmine',
       'jasmine-html': '../bower_components/jasmine/lib/jasmine-core/jasmine-html',
-      'jasmine-jquery': '../bower_components/jasmine-jquery/lib/jasmine-jquery',
+      'boot': '../bower_components/jasmine/lib/jasmine-core/boot',
+//      'jasmine-jquery': '../bower_components/jasmine-jquery/lib/jasmine-jquery',
 
 			/* Foundation stuff, from http://foundation.zurb.com/forum/posts/18248-requirejs-with-foundation-5 */
 			"foundation": '../bower_components/foundation/js/foundation',
@@ -41,10 +42,18 @@ var requirejs = {
 
       /* Testing Stuff. */
       'jasmine': {
-        exports: 'jasmine'
+        exports: 'window.jasmineRequire'
       },
-      'jasmine-html': ['jasmine'],
-      'jasmine-jquery': ['jasmine'],
+      'jasmine-html': {
+        deps: ['jasmine'],
+        exports: 'window.jasmineRequire'
+      },
+      'boot': {
+        deps: ['jasmine', 'jasmine-html'],
+        exports: 'window.jasmineRequire'
+      },
+
+
 
 			/* Foundation stuff, from http://foundation.zurb.com/forum/posts/18248-requirejs-with-foundation-5 */
 			"foundation.abide": ['foundation'],

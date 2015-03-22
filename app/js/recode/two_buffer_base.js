@@ -1,6 +1,6 @@
 'use strict';
 
-define(['recode/base'], function(RecodeBase){
+define(['underscore', 'recode/base'], function(_, RecodeBase){
 
   function TwoBufferRecodeBase(original_data = ['', '']){
     if(original_data.length == 2)

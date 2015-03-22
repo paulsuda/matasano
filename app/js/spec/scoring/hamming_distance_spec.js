@@ -10,8 +10,13 @@ function(jasmine, ScoreHammingDistance) {
     var subject_class = ScoreHammingDistance;
 
     it("Should return 37 for 'this is a test' and 'wokka wokka!!!'.", function(){
-      output = new subject_class(input_values);
-      expect(output).toEqual(37); 
+      console.log('testing hamming');
+      subject = new subject_class(input_values);
+      output = subject.decodeAll();
+      console.log(subject_class);
+      console.log(input_values);
+      console.log(output);
+      expect(output).toEqual(37);
     });
 
   });

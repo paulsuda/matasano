@@ -5,28 +5,34 @@
 require([
   'jquery',
   'jasmine',
+	'boot',
   'jasmine-html',
-  'jasmine-jquery',
-
-  'spec/scoring/hamming_distance_spec',
 ],
-function($, jasmine) {
+function($, jasmine, jasmine_boot, jasmine_html) {
+	var specs_list = [
+		'spec/scoring/hamming_distance_spec',
+  ];
 
-	    console.log('spec runner');
+  console.log('spec runner');
 
-  var jasmineEnv = jasmine.getEnv();
-  jasmineEnv.updateInterval = 1000;
+  require(specs_list, function(){
+		window.onload();
 
-  var htmlReporter = new jasmine.HtmlReporter();
-  jasmineEnv.addReporter(htmlReporter);
+		// var jasmineEnv = jasmine.getEnv();
+		// jasmineEnv.updateInterval = 1000;
+		//
+		// var htmlReporter = new jasmine.HtmlReporter();
+		// jasmineEnv.addReporter(htmlReporter);
+		//
+		// jasmineEnv.specFilter = function(spec) {
+		// 	return htmlReporter.specFilter(spec);
+		// };
+		//
+		// $(function () {
+		// 	jasmine.getEnv().execute();
+		// });
+	});
 
-  jasmineEnv.specFilter = function(spec) {
-    return htmlReporter.specFilter(spec);
-  };
 
-  $(function () {
-    jasmine.getEnv().execute();
-  });
 
 });
-
