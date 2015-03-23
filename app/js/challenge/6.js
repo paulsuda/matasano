@@ -1,40 +1,7 @@
 'use strict';
 
-define(['text!/example_data/set1challenge6.txt', 'challenge/base', 'scoring/hamming_distance'],
-  function(sampleBase64File, ChallengeBase, HammingDistance){
-
-  function Histogram(min, max, init_value = 0.0){
-    var i;
-    this.data = [];
-    this.max_index = max;
-    this.min_index = min;
-    for(i = min; i < max; i++){
-      this.data.push({
-        index: i,
-        value: init_value,
-      });
-    }
-  }
-
-  Histogram.prototype.set_value = function(index, value){
-    //this.data[index] = value;
-
-    var found_item = _.where(this.data, {'index' : index}).pop();
-    if(found_item == undefined){
-      throw("Unable to find histogram index " + index);
-    }
-    found_item.value = value;
-    return found_item;
-  };
-
-  Histogram.prototype.sorted = function(field = 'value'){
-    _.sortBy(this.data, field);
-  };
-
-  Histogram.prototype.min_item = function(){
-    return _.min(this.data, 'value');
-  };
-
+define(['text!/example_data/set1challenge6.txt', 'challenge/base', 'scoring/hamming_distance', 'misc/histogram'],
+  function(sampleBase64File, ChallengeBase, HammingDistance, Histogram){
 
   function Set1Challenge6(){
     ChallengeBase.apply(this,['set1challenge6']);
