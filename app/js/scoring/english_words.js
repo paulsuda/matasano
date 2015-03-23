@@ -1,6 +1,7 @@
 'use strict';
 
-define([], function(){
+define(['text!/example_data/english-words-by-freq.txt', 'underscore'],
+  function(word_list_file, _){
 
   function ScoreEnglishWords(){
     this.log_messages = [];
@@ -11,7 +12,6 @@ define([], function(){
       longest_printable: 2.0,
       printable: 2.0,
     };
-    this.commonWordsInit();
   }
 
   ScoreEnglishWords.long_word_list = null;
@@ -19,7 +19,7 @@ define([], function(){
   /**
    * Cache this instance's word list.
    */
-  ScoreEnglishWords.prototype.cacheLongWordList = function(common_words_list){
+  ScoreEnglishWords.cacheLongWordList = function(common_words_list){
     ScoreEnglishWords.long_word_list = {
       list: common_words_list,
       regex: new RegExp('\\b(' + common_words_list.join('|') + ')\\b', 'ig')
@@ -28,29 +28,25 @@ define([], function(){
 
   /**
    * Load up a list of frequently used english language words from a text file.
+   * Called when module is loaded.
    */
-  ScoreEnglishWords.prototype.commonWordsInit = function(){
-  //  this.common_words_list =  ['the', 'be', 'to', 'of', 'and']; return;
-    if(ScoreEnglishWords.long_word_list != null) return ScoreEnglishWords.long_word_list;
+  ScoreEnglishWords.commonWordsInit = function(word_list_file){
     var comment_re = /^#+.*/;
-    var thisObj = this;
     var word_list_limit = 1000;
     ScoreEnglishWords.long_word_list = {};
-    console.log('Getting score words list');
-    $.get('/example_data/english-words-by-freq.txt', function(word_list){
-      console.log('Got list');
-      word_list = word_list.split("\n");
-      /* Reject comment lines starting w # */
-      word_list = _.reject(word_list, function(line){
-        var is_comment = (comment_re.exec(line) != null);
-        var is_too_short = line.length < 2;
-        return is_comment || is_too_short;
-      });
-      word_list = word_list.slice(0, word_list_limit);
-      //thisObj.progressLog
-      console.log('ScoreEnglishWords imported ' + word_list.length + ' words.');
-      thisObj.cacheLongWordList(word_list);
+    console.log('ScoreEnglishWords parsing score words list.');
+    var word_list = word_list_file.split("\n");
+    console.log('ScoreEnglishWords got list ' + word_list.length + ' lines.');
+    /* Reject comment lines starting w # */
+    word_list = _.reject(word_list, function(line){
+      var is_comment = (comment_re.exec(line) != null);
+      var is_too_short = line.length < 2;
+      return is_comment || is_too_short;
     });
+    /* Limit count */
+    word_list = word_list.slice(0, word_list_limit);
+    console.log('ScoreEnglishWords imported ' + word_list.length + ' words.');
+    ScoreEnglishWords.cacheLongWordList(word_list);
   };
 
   /**
@@ -125,5 +121,6 @@ define([], function(){
     return messages;
   };
 
+  ScoreEnglishWords.commonWordsInit(word_list_file);
   return ScoreEnglishWords;
 });

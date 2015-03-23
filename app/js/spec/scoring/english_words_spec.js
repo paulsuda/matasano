@@ -8,7 +8,7 @@ function(ScoreEnglishWords) {
     var subject_class = ScoreEnglishWords;
 
     it("Should return an integer that is greater for english text than random text.", function(){
-      pending("Words list loading is messing this up.");
+      //pending("Words list loading is messing this up.");
       subject = new subject_class();
       english_score = subject.getScore(english_content);
       junk_score = subject.getScore(junk_content);

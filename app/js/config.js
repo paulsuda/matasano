@@ -6,6 +6,8 @@ var requirejs = {
     baseUrl: 'js',
 
     paths: {
+      'text': '../bower_components/requirejs-text/text',
+
 			'underscore': '../bower_components/underscore/underscore',
       'jquery': '../bower_components/jquery/dist/jquery',
 			'jquery.cookie': '../bower_components/jquery.cookie/jquery.cookie',
@@ -36,7 +38,7 @@ var requirejs = {
 	    "foundation.toolbar": '../bower_components/foundation/js/foundation/foundation.toolbar',
 	    "foundation.topbar": '../bower_components/foundation/js/foundation/foundation.topbar'
     },
-    
+
 		shim: {
 			"jquery.cookie": ['jquery'],
 			"foundation": ['jquery', 'fastclick'],

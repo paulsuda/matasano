@@ -1,7 +1,7 @@
 'use strict';
 
-define(['jquery', 'foundation', 'challenge/1', 'challenge/2', 'challenge/3', 'challenge/4', 'challenge/5', 'challenge/6'],
-  function(jQuery, foundation, Set1Challenge1, Set1Challenge2, Set1Challenge3, Set1Challenge4, Set1Challenge5, Set1Challenge6){
+define(['text', 'jquery', 'foundation', 'challenge/1', 'challenge/2', 'challenge/3', 'challenge/4', 'challenge/5', 'challenge/6'],
+  function(text, jQuery, foundation, Set1Challenge1, Set1Challenge2, Set1Challenge3, Set1Challenge4, Set1Challenge5, Set1Challenge6){
 
 	var app = (function(document, $) {
 		// TODO, weird format here. Redo?
