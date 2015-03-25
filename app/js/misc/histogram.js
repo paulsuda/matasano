@@ -36,10 +36,19 @@ define(['underscore', 'd3'], function(_){
     return _.max(this.data, 'value');
   };
 
+  Histogram.prototype.values_array = function(){
+    var a = [];
+    _.each(this.data, function(item){
+      a[item.index] = item.value;
+    });
+    return a;
+  };
+
   // Originally based on example at http://bl.ocks.org/mbostock/3048450
   Histogram.prototype.render_html = function(container_id){
     // Generate a Bates distribution of 10 random variables.
-    var values = d3.range(200).map(d3.random.bates(10));
+    //var values = d3.range(200).map(d3.random.bates(10));
+    var values = this.values_array();
     var ticks = values.length;
     var width = 700;
     var height = 400;
@@ -51,21 +60,33 @@ define(['underscore', 'd3'], function(_){
 
 
     var x = d3.scale.linear()
-      .domain([0, 1])
       .range([0, width]);
 
     // Generate a histogram using twenty uniformly-spaced bins.
-    var xticks = x.ticks(ticks);
+    var xticks = x.ticks(ticks)
     var bins = d3histogram.bins(xticks);
+    console.log('bins'); console.log(bins);
     var data = bins(values);
+    // var data = bins(function(i){
+    //   console.log('data = bins' + i);
+    // });
+
+    // data = function(i, j){
+    //   console.log('data func ' + i + ' ' + j);
+    //   return values[j];
+    // };
+
+    console.log('data'); console.log(bins);
 
     var y = d3.scale.linear()
-      .domain([0, d3.max(data, function(d) { return d.y; })])
+      .domain([0, this.max_item().value])
       .range([height, 0]);
 
     var xAxis = d3.svg.axis()
       .scale(x)
       .orient("bottom");
+
+    var dx = 0.3;
 
     var svg = d3.select("#" + container_id).append("svg")
         .attr("width", width + margin.left + margin.right)
@@ -81,13 +102,13 @@ define(['underscore', 'd3'], function(_){
 
     bar.append("rect")
         .attr("x", 1)
-        .attr("width", x(data[0].dx) - 1)
+        .attr("width", x(dx) - 1)
         .attr("height", function(d) { return height - y(d.y); });
 
     bar.append("text")
         .attr("dy", ".75em")
         .attr("y", 6)
-        .attr("x", x(data[0].dx) / 2)
+        .attr("x", x(dx) / 2)
         .attr("text-anchor", "middle")
         .text(function(d) { return formatCount(d.y); });
 
@@ -95,6 +116,10 @@ define(['underscore', 'd3'], function(_){
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
         .call(xAxis);
+
+    svg.append("g")
+      .attr("class", "y axis")
+      .call(d3.svg.axis().scale(y).orient("left"));
 
     return;
   }
