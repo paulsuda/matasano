@@ -32,33 +32,42 @@ define(['underscore', 'd3'], function(_){
     return _.min(this.data, 'value');
   };
 
+  Histogram.prototype.max_item = function(){
+    return _.max(this.data, 'value');
+  };
+
+  // Originally based on example at http://bl.ocks.org/mbostock/3048450
   Histogram.prototype.render_html = function(container_id){
     // Generate a Bates distribution of 10 random variables.
-    var values = d3.range(1000).map(d3.random.bates(10));
+    var values = d3.range(200).map(d3.random.bates(10));
+    var ticks = values.length;
+    var width = 700;
+    var height = 400;
+    console.log('values'); console.log(values);
     // A formatter for counts.
     var formatCount = d3.format(",.0f");
-    var margin = {top: 10, right: 30, bottom: 30, left: 30},
-      width = 960 - margin.left - margin.right,
-      height = 500 - margin.top - margin.bottom;
+    var margin = {top: 10, right: 30, bottom: 30, left: 30};
+    var d3histogram = d3.layout.histogram();
+
 
     var x = d3.scale.linear()
       .domain([0, 1])
       .range([0, width]);
 
     // Generate a histogram using twenty uniformly-spaced bins.
-    var data = d3.layout.histogram()
-        .bins(x.ticks(20))
-        (values);
+    var xticks = x.ticks(ticks);
+    var bins = d3histogram.bins(xticks);
+    var data = bins(values);
 
     var y = d3.scale.linear()
-        .domain([0, d3.max(data, function(d) { return d.y; })])
-        .range([height, 0]);
+      .domain([0, d3.max(data, function(d) { return d.y; })])
+      .range([height, 0]);
 
     var xAxis = d3.svg.axis()
-        .scale(x)
-        .orient("bottom");
+      .scale(x)
+      .orient("bottom");
 
-    var svg = d3.select("body").append("svg")
+    var svg = d3.select("#" + container_id).append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
       .append("g")
