@@ -13,6 +13,7 @@ var requirejs = {
 			'jquery.cookie': '../bower_components/jquery.cookie/jquery.cookie',
 			'fastclick': '../bower_components/fastclick/lib/fastclick',
       'd3' : '../bower_components/d3/d3',
+      'd3-tip' : '../bower_components/d3-tip/index',
 
       /* Testing stuff. */
       'jasmine': '../bower_components/jasmine/lib/jasmine-core/jasmine',
@@ -44,6 +45,10 @@ var requirejs = {
 			"jquery.cookie": ['jquery'],
       d3: {
         exports: 'd3'
+      },
+      'd3-tip': {
+        deps: ['d3'],
+        exports: 'd3tip'
       },
 
 			"foundation": ['jquery', 'fastclick'],

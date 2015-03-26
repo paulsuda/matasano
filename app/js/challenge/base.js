@@ -6,16 +6,6 @@ define(['jquery'], function($){
     this.challenge_id = challenge_id;
     this.last_defaults = [];
     this.log_messages = [];
-    var thisObj = this;
-    var e = this.challengeElement();
-    /* Disable output display textfield by default. */
-    //e.find('.output-field').prop('disabled', true);
-    /* Get the form element and hook submit events. */
-    e.submit(function(event){
-      event.preventDefault();
-      thisObj.runChallenge();
-      return false;
-    });
   }
 
   ChallengeBase.prototype.runChallenge = function(){
@@ -58,7 +48,6 @@ define(['jquery'], function($){
 
   ChallengeBase.prototype.compute = function(input_values){
     throw "ChallengeBase compute() called. Should be called by derived class.";
-    // return [result_data];
   };
 
   ChallengeBase.prototype.challengeElement = function(){
@@ -73,10 +62,22 @@ define(['jquery'], function($){
 
   ChallengeBase.prototype.setInputDefaults = function(default_values){
     this.last_defaults = default_values;
+  };
+
+  ChallengeBase.prototype.setupInputEvent = function(){
     var e = this.challengeElement();
+    var thisObj = this;
+
+    /* Set default values to inputs. */
     var input_elem = e.find('.input-field');
-    return input_elem.map(function (i, elem) {
-      return $(elem).val(default_values[i]);
+    input_elem.map(function (i, elem) {
+      return $(elem).val(thisObj.last_defaults[i]);
+    });
+    /* Get the form element and hook submit events. */
+    e.submit(function(event){
+      event.preventDefault();
+      thisObj.runChallenge();
+      return false;
     });
   };
 

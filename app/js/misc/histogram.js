@@ -1,6 +1,6 @@
 'use strict';
 
-define(['underscore', 'd3'], function(_){
+define(['underscore', 'd3', 'd3-tip'], function(_, d3, d3tip){
 
   function Histogram(min, max, init_value = 0.0){
     var i;
@@ -45,7 +45,8 @@ define(['underscore', 'd3'], function(_){
   };
 
   // Originally based on example at http://bl.ocks.org/mbostock/3048450
-  Histogram.prototype.render_html = function(container_id){
+  Histogram.prototype.render_html = function(container_element){
+    console.log(container_element);
     var values = this.data;
     var ticks = values.length;
     var width = 700;
@@ -53,6 +54,13 @@ define(['underscore', 'd3'], function(_){
 
     var formatValue = d3.format(",.2f");
     var margin = {top: 10, right: 30, bottom: 30, left: 30};
+
+    var tip = d3tip()
+      .attr('class', 'd3-tip')
+      .offset([-10, 0])
+      .html(function(d) {
+        return "<strong>[" + d.index + '] = </strong> <span class="value">' + d.value + "</span>";
+      });
 
     var x = d3.scale.linear()
       .domain([this.min_index, this.max_index])
@@ -67,24 +75,33 @@ define(['underscore', 'd3'], function(_){
 
     var bar_width = x(this.min_index + 1) - x(this.min_index); //DEBUG hard coded.
 
-    var svg = d3.select("#" + container_id).append("svg")
+    var svg = d3.select(container_element).append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
       .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+    svg.call(tip);
+
     var bar = svg.selectAll(".bar")
         .data(values)
       .enter().append("g")
-        .attr("class", "bar")
+        .attr("class", function(d) {
+          var class_list = ['bar'];
+          if(d.highlight){
+            class_list.push('highlight');
+          }
+          return class_list.join(' ');
+        })
         .attr("transform", function(d) {
-          console.log('transf d'); console.log(d);
           return "translate(" + x(d.index) + "," + y(d.value) + ")";
         });
 
     bar.append("rect")
         .attr("width", bar_width)
-        .attr("height", function(d) { return height - y(d.value); });
+        .attr("height", function(d) { return height - y(d.value); })
+        .on('mouseover', tip.show)
+        .on('mouseout', tip.hide);
 
     bar.append("text")
         .attr("y", -6)

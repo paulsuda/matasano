@@ -15,19 +15,24 @@ define(['text', 'jquery', 'foundation', 'challenge/1', 'challenge/2', 'challenge
 				_userAgentInit();
 			},
 			_switch_challenge = function(challenge_id) {
-				$('.challenge').hide();
 				var challenge_instance = registeredChallenges[challenge_id];
+        var challenge_container = $('#challenge-content');
 				if(!challenge_instance){
 					alert('No challenge instance found for: ' + challenge_id);
 				}
 				else{
-					var challenge_elem = challenge_instance.challengeElement();
-					if(!challenge_elem.length){
-						alert('No challenge element found for: ' + challenge_id);
-					}
-					else{
-						challenge_elem.show();
-					}
+          challenge_container.html('<h1>loading...</h1>');
+          var successCallback = function(partial_html){
+            challenge_container.html(partial_html);
+            challenge_instance.setupInputEvent();
+          };
+          var failCallback = function(err){
+            console.log(err);
+            alert('No content partial found for: ' + challenge_id);
+            challenge_container.html('<h1 class="error">failed loading</h1>');
+          };
+          require(['text!/partials/' + challenge_id + '.html'],
+            successCallback, failCallback);
 				}
 			},
 			_switch_challenge_by_state = function(){

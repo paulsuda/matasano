@@ -28,8 +28,11 @@ define(['text!/example_data/set1challenge6.txt', 'challenge/base', 'scoring/hamm
       key_size_distances.set_value(key_size, normalized_dist);
     }
     console.log(key_size_distances);
-    key_size_distances.render_html('set1challenge6');
     var item = key_size_distances.min_item();
+    item.highlight = true;
+    var chart_el = this.challengeElement().find('.chart');
+    chart_el.html('');
+    key_size_distances.render_html(chart_el[0]);
     return 'Minimum distance ' + item.value + ' found for key size ' + item.index;
   };
 
