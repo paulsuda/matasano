@@ -46,47 +46,26 @@ define(['underscore', 'd3'], function(_){
 
   // Originally based on example at http://bl.ocks.org/mbostock/3048450
   Histogram.prototype.render_html = function(container_id){
-    // Generate a Bates distribution of 10 random variables.
-    //var values = d3.range(200).map(d3.random.bates(10));
-    var values = this.values_array();
+    var values = this.data;
     var ticks = values.length;
     var width = 700;
     var height = 400;
-    console.log('values'); console.log(values);
-    // A formatter for counts.
-    var formatCount = d3.format(",.0f");
-    var margin = {top: 10, right: 30, bottom: 30, left: 30};
-    var d3histogram = d3.layout.histogram();
 
+    var formatValue = d3.format(",.2f");
+    var margin = {top: 10, right: 30, bottom: 30, left: 30};
 
     var x = d3.scale.linear()
+      .domain([this.min_index, this.max_index])
       .range([0, width]);
-
-    // Generate a histogram using twenty uniformly-spaced bins.
-    var xticks = x.ticks(ticks)
-    var bins = d3histogram.bins(xticks);
-    console.log('bins'); console.log(bins);
-    var data = bins(values);
-    // var data = bins(function(i){
-    //   console.log('data = bins' + i);
-    // });
-
-    // data = function(i, j){
-    //   console.log('data func ' + i + ' ' + j);
-    //   return values[j];
-    // };
-
-    console.log('data'); console.log(bins);
 
     var y = d3.scale.linear()
       .domain([0, this.max_item().value])
       .range([height, 0]);
 
-    var xAxis = d3.svg.axis()
-      .scale(x)
-      .orient("bottom");
+    var xAxis = d3.svg.axis().scale(x).orient("bottom");
+    var yAxis = d3.svg.axis().scale(y).orient("left");
 
-    var dx = 0.3;
+    var bar_width = x(this.min_index + 1) - x(this.min_index); //DEBUG hard coded.
 
     var svg = d3.select("#" + container_id).append("svg")
         .attr("width", width + margin.left + margin.right)
@@ -95,22 +74,22 @@ define(['underscore', 'd3'], function(_){
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     var bar = svg.selectAll(".bar")
-        .data(data)
+        .data(values)
       .enter().append("g")
         .attr("class", "bar")
-        .attr("transform", function(d) { return "translate(" + x(d.x) + "," + y(d.y) + ")"; });
+        .attr("transform", function(d) {
+          console.log('transf d'); console.log(d);
+          return "translate(" + x(d.index) + "," + y(d.value) + ")";
+        });
 
     bar.append("rect")
-        .attr("x", 1)
-        .attr("width", x(dx) - 1)
-        .attr("height", function(d) { return height - y(d.y); });
+        .attr("width", bar_width)
+        .attr("height", function(d) { return height - y(d.value); });
 
     bar.append("text")
-        .attr("dy", ".75em")
-        .attr("y", 6)
-        .attr("x", x(dx) / 2)
-        .attr("text-anchor", "middle")
-        .text(function(d) { return formatCount(d.y); });
+        .attr("y", -6)
+        .attr("x", -1)
+        .text(function(d) { return formatValue(d.value); });
 
     svg.append("g")
         .attr("class", "x axis")
@@ -119,7 +98,7 @@ define(['underscore', 'd3'], function(_){
 
     svg.append("g")
       .attr("class", "y axis")
-      .call(d3.svg.axis().scale(y).orient("left"));
+      .call(yAxis);
 
     return;
   }
