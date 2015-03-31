@@ -7,7 +7,7 @@ define(['underscore', 'd3', 'd3-tip'], function(_, d3, d3tip){
     this.data = [];
     this.max_index = max;
     this.min_index = min;
-    for(i = min; i < max; i++){
+    for(i = min; i <= max; i++){
       this.data.push({
         index: i,
         value: init_value,
@@ -15,12 +15,23 @@ define(['underscore', 'd3', 'd3-tip'], function(_, d3, d3tip){
     }
   }
 
-  Histogram.prototype.set_value = function(index, value){
+  Histogram.prototype.find_index = function(index){
     var found_item = _.where(this.data, {'index' : index}).pop();
     if(found_item == undefined){
       throw("Unable to find histogram index " + index);
     }
+    return found_item;
+  };
+
+  Histogram.prototype.set_value = function(index, value){
+    var found_item = this.find_index(index);
     found_item.value = value;
+    return found_item;
+  };
+
+  Histogram.prototype.add_value = function(index, value = 1){
+    var found_item = this.find_index(index);
+    found_item.value += value;
     return found_item;
   };
 
