@@ -3,17 +3,48 @@
 define(['underscore', 'd3', 'd3-tip'], function(_, d3, d3tip){
 
   function Histogram(min, max, init_value = 0.0){
-    var i;
-    this.data = [];
     this.max_index = max;
     this.min_index = min;
-    for(i = min; i <= max; i++){
+    if(_.isObject(init_value)){
+      this.data = init_value;
+    }
+    else{
+      this.fill_value(init_value);
+    }
+  }
+
+  Histogram.compareChiSquared = function(expected, sample){
+    var sample_sum = sample.sum_values();
+    var normalize = function(v){
+      return sample_sum * v;
+    };
+    var series_sum = function(func){
+      return _.reduce(expected.data, function(memo, expected_item){
+        var sample_item = sample.find_index(expected_item.index);
+        return memo + func(expected_item.value, sample_item.value);
+      }, 0);
+    };
+    return series_sum(function(expected_value, sample_value){
+      var expected_normalized = normalize(expected_value);
+      return Math.pow(sample_value - expected_normalized, 2) /
+        expected_normalized;
+    });
+  };
+
+  Histogram.chiSquaredDist = function(degrees_of_freedom, alpha = 0.01){
+    
+  };
+
+  Histogram.prototype.fill_value = function(init_value){
+    var i;
+    this.data = [];
+    for(i = this.min; i <= this.max; i++){
       this.data.push({
         index: i,
         value: init_value,
       });
     }
-  }
+  };
 
   Histogram.prototype.find_index = function(index){
     var found_item = _.where(this.data, {'index' : index}).pop();
@@ -45,6 +76,13 @@ define(['underscore', 'd3', 'd3-tip'], function(_, d3, d3tip){
 
   Histogram.prototype.max_item = function(){
     return _.max(this.data, 'value');
+  };
+
+  Histogram.prototype.sum_values = function(){
+    return _.reduce(this.data, function(memo, item){
+      var num = item.value;
+      return memo + num;
+    }, 0);
   };
 
   Histogram.prototype.values_array = function(){
