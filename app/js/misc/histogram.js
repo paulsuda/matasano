@@ -31,8 +31,11 @@ define(['underscore', 'd3', 'd3-tip'], function(_, d3, d3tip){
     });
   };
 
+  /**
+   * chiSquaredDist(2, 0.01) is equivalent to R's qchisq(.99, 2)
+   */
   Histogram.chiSquaredDist = function(degrees_of_freedom, alpha = 0.01){
-    
+    //return cdf(degrees_of_freedom);
   };
 
   Histogram.prototype.fill_value = function(init_value){
