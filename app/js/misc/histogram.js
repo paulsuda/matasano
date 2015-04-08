@@ -14,7 +14,18 @@ function(_, d3, d3tip, ChiSquaredDist){
     }
   }
 
-  Histogram.compareChiSquared = function(expected, sample){
+  Histogram.compareChiSquared = function(expected, sample, alpha){
+    var result = Histogram.computeChiSquared(expected, sample);
+    var df = (expected.max_index - expected.min_index) - 1;
+    var dist_value = Histogram.chiSquaredCritical(df, 0.01);
+    var final_result = (result < dist_value);
+    return final_result;
+  };
+
+  /**
+   * Compute the Chi^2 test value for the two histograms.
+   */
+  Histogram.computeChiSquared = function(expected, sample){
     var sample_sum = sample.sum_values();
     var normalize = function(v){
       return sample_sum * v;
@@ -25,6 +36,9 @@ function(_, d3, d3tip, ChiSquaredDist){
         return memo + func(expected_item.value, sample_item.value);
       }, 0);
     };
+    if(expected.sample_count() != sample.sample_count()){
+      throw "Cannot computeChiSquared() with two histograms of differing sizes.";
+    }
     return series_sum(function(expected_value, sample_value){
       var expected_normalized = normalize(expected_value);
       return Math.pow(sample_value - expected_normalized, 2) /
@@ -33,16 +47,20 @@ function(_, d3, d3tip, ChiSquaredDist){
   };
 
   /**
-   * chiSquaredDist(2, 0.01) is equivalent to R's qchisq(.99, 2)
+   * chiSquaredCritical(2, 0.01) is equivalent to R's qchisq(.99, 2)
    */
-  Histogram.chiSquaredDist = function(degrees_of_freedom, alpha = 0.01){
+  Histogram.chiSquaredCritical = function(degrees_of_freedom, alpha = 0.01){
     return ChiSquaredDist.critchi(alpha, degrees_of_freedom)
+  };
+
+  Histogram.prototype.sample_count = function(){
+    return (this.max_index - this.min_index);
   };
 
   Histogram.prototype.fill_value = function(init_value){
     var i;
     this.data = [];
-    for(i = this.min; i <= this.max; i++){
+    for(i = this.min_index; i <= this.max_index; i++){
       this.data.push({
         index: i,
         value: init_value,
@@ -99,7 +117,6 @@ function(_, d3, d3tip, ChiSquaredDist){
 
   // Originally based on example at http://bl.ocks.org/mbostock/3048450
   Histogram.prototype.render_html = function(container_element){
-    console.log(container_element);
     var values = this.data;
     var ticks = values.length;
     var width = 700;

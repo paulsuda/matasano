@@ -32,17 +32,7 @@ function(Histogram) {
 
     });
 
-
-    describe("class function chiSquaredDist", function(){
-      it("returns expected value for known degrees of freedom and certainties", function(){
-        chisq = subject_class.chiSquaredDist;
-        expect(chisq(2, 0.01)).toBeCloseTo(9.21034);
-      });
-
-    });
-
-    /* Based on example on p 917 statistics for business economics 7th ed */
-    describe("class function compareChiSquared", function(){
+    describe("class functions about Chi^2 tests", function(){
       /* Null hypothesis, expected distribution */
       var null_hyp = new subject_class(0, 2, [
         {index: 0, value: .1},
@@ -55,18 +45,27 @@ function(Histogram) {
         {index: 1, value: 365},
         {index: 2, value: 193},
       ]);
-      it("computes expected chi^2 value", function(){
-        var result = subject_class.compareChiSquared(null_hyp, alt_hyp);
-        expect(result).toBeCloseTo(19.33);
+
+      describe("class function chiSquaredCritical", function(){
+        it("returns expected value for known degrees of freedom and certainties", function(){
+          chisq = subject_class.chiSquaredCritical;
+          expect(chisq(2, 0.01)).toBeCloseTo(9.21034);
+        });
       });
-      it("computes expected result", function(){
-        var result = subject_class.compareChiSquared(null_hyp, alt_hyp);
-        var df = (null_hyp.max_index - null_hyp.min_index) - 1;
-        var dist_value = subject_class.chiSquaredDist(df, 0.01);
-        console.log(result);
-        console.log(dist_value);
-        var final_result = (result < dist_value);
-        expect(final_result).toBe(false);
+
+      /* Based on example on p 917 statistics for business economics 7th ed */
+      describe("class function computeChiSquared", function(){
+        it("computes expected chi^2 value", function(){
+          var result = subject_class.computeChiSquared(null_hyp, alt_hyp);
+          expect(result).toBeCloseTo(19.33);
+        });
+      });
+
+      describe("class function compareChiSquared", function(){
+        it("find expected false result", function(){
+          var final_result = subject_class.compareChiSquared(null_hyp, alt_hyp, 0.01);
+          expect(final_result).toBe(false);
+        });
       });
 
     });
