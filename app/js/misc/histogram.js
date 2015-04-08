@@ -1,6 +1,7 @@
 'use strict';
 
-define(['underscore', 'd3', 'd3-tip'], function(_, d3, d3tip){
+define(['underscore', 'd3', 'd3-tip', 'contrib-manual/chisquared'],
+function(_, d3, d3tip, ChiSquaredDist){
 
   function Histogram(min, max, init_value = 0.0){
     this.max_index = max;
@@ -35,7 +36,7 @@ define(['underscore', 'd3', 'd3-tip'], function(_, d3, d3tip){
    * chiSquaredDist(2, 0.01) is equivalent to R's qchisq(.99, 2)
    */
   Histogram.chiSquaredDist = function(degrees_of_freedom, alpha = 0.01){
-    //return cdf(degrees_of_freedom);
+    return ChiSquaredDist.critchi(alpha, degrees_of_freedom)
   };
 
   Histogram.prototype.fill_value = function(init_value){

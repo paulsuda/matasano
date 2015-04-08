@@ -19,6 +19,7 @@ var requirejs = {
       'jasmine': '../bower_components/jasmine/lib/jasmine-core/jasmine',
       'jasmine-html': '../bower_components/jasmine/lib/jasmine-core/jasmine-html',
       'boot': '../bower_components/jasmine/lib/jasmine-core/boot',
+      'numbers': '../bower_components/numbers.js/src/numbers',
       //'jasmine-jquery': '../bower_components/jasmine-jquery/lib/jasmine-jquery',
 
 			/* Foundation stuff, from http://foundation.zurb.com/forum/posts/18248-requirejs-with-foundation-5 */

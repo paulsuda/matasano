@@ -32,10 +32,11 @@ function(Histogram) {
 
     });
 
+
     describe("class function chiSquaredDist", function(){
       it("returns expected value for known degrees of freedom and certainties", function(){
         chisq = subject_class.chiSquaredDist;
-        expect(chisq(2)).toBeCloseTo(9.21034);
+        expect(chisq(2, 0.01)).toBeCloseTo(9.21034);
       });
 
     });
@@ -58,11 +59,14 @@ function(Histogram) {
         var result = subject_class.compareChiSquared(null_hyp, alt_hyp);
         expect(result).toBeCloseTo(19.33);
       });
-      it("computes expected chi^2 value", function(){
+      it("computes expected result", function(){
         var result = subject_class.compareChiSquared(null_hyp, alt_hyp);
-        var dist_value = subject_class.chiSquaredDist();
+        var df = (null_hyp.max_index - null_hyp.min_index) - 1;
+        var dist_value = subject_class.chiSquaredDist(df, 0.01);
+        console.log(result);
+        console.log(dist_value);
         var final_result = (result < dist_value);
-        expect(result).toBeFalsey(final_result);
+        expect(final_result).toBe(false);
       });
 
     });
