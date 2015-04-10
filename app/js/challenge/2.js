@@ -3,8 +3,8 @@
 define(['challenge/base', 'decode/hex', 'recode/xor', 'encode/hex'],
   function(ChallengeBase, DecodeHexString, DecodeXorStrings, EncodeHexString){
 
-  function Set1Challenge2(){
-    ChallengeBase.apply(this,['set1challenge2']);
+  function Challenge2(){
+    ChallengeBase.apply(this,['2']);
     this.setInputDefaults([
       '1c0111001f010100061a024b53535009181c',
       '686974207468652062756c6c277320657965'
@@ -12,9 +12,9 @@ define(['challenge/base', 'decode/hex', 'recode/xor', 'encode/hex'],
     return this;
   }
 
-  Set1Challenge2.prototype = Object.create(ChallengeBase.prototype);
+  Challenge2.prototype = Object.create(ChallengeBase.prototype);
 
-  Set1Challenge2.prototype.compute = function(input_values){
+  Challenge2.prototype.compute = function(input_values){
     /* Alias func. */
     var dec = this.decodeAllUsing;
     /* Two hex inputs. */
@@ -30,6 +30,6 @@ define(['challenge/base', 'decode/hex', 'recode/xor', 'encode/hex'],
     return encoder_output;
   };
 
-  return Set1Challenge2;
+  return Challenge2;
 
 });

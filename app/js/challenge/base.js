@@ -51,7 +51,7 @@ define(['jquery'], function($){
   };
 
   ChallengeBase.prototype.challengeElement = function(){
-    return $('#' + this.challenge_id);
+    return $('#challenge' + this.challenge_id);
   };
 
   ChallengeBase.prototype.decodeAllUsing = function(decoderClass, input_data){

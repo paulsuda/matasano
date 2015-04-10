@@ -2,8 +2,8 @@
 
 define(['challenge/base', 'recode/xor', 'encode/hex'], function(ChallengeBase, DecodeXorStrings, EncodeHexString){
 
-  function Set1Challenge5(){
-    ChallengeBase.apply(this,['set1challenge5']);
+  function Challenge5(){
+    ChallengeBase.apply(this,['5']);
     this.setInputDefaults([
       "Burning 'em, if you ain't quick and nimble\nI go crazy when I hear a cymbal",
       'ICE'
@@ -11,9 +11,9 @@ define(['challenge/base', 'recode/xor', 'encode/hex'], function(ChallengeBase, D
     return this;
   }
 
-  Set1Challenge5.prototype = Object.create(ChallengeBase.prototype);
+  Challenge5.prototype = Object.create(ChallengeBase.prototype);
 
-  Set1Challenge5.prototype.compute = function(input_values){
+  Challenge5.prototype.compute = function(input_values){
     /* Alias func. */
     var dec = this.decodeAllUsing;
     /* Two string inputs. */
@@ -30,6 +30,6 @@ define(['challenge/base', 'recode/xor', 'encode/hex'], function(ChallengeBase, D
     return encoder_output;
   };
 
-  return Set1Challenge5;
+  return Challenge5;
 
 });

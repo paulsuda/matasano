@@ -1,12 +1,12 @@
 'use strict';
 
-define(['text!/example_data/set1challenge6.txt',
+define(['text!/example_data/challenge6.txt',
         'challenge/base', 'scoring/hamming_distance', 'misc/histogram',
         'recode/chunk_by_stride'],
   function(sampleBase64File, ChallengeBase, HammingDistance, Histogram, ChunkByStride){
 
-  function Set1Challenge6(){
-    ChallengeBase.apply(this,['set1challenge6']);
+  function Challenge6(){
+    ChallengeBase.apply(this,['6']);
     this.setInputDefaults([
       sampleBase64File,
       'n/a'
@@ -16,9 +16,9 @@ define(['text!/example_data/set1challenge6.txt',
     return this;
   }
 
-  Set1Challenge6.prototype = Object.create(ChallengeBase.prototype);
+  Challenge6.prototype = Object.create(ChallengeBase.prototype);
 
-  Set1Challenge6.prototype.compute = function(input_values){
+  Challenge6.prototype.compute = function(input_values){
     var key_size_distances = this.get_key_size_distances(input_values[0]);
     var key_size = this.key_size_result(key_size_distances);
     var chunker = new ChunkByStride(input_values[0], key_size);
@@ -28,7 +28,7 @@ define(['text!/example_data/set1challenge6.txt',
     return 'na';
   };
 
-  Set1Challenge6.prototype.key_size_result = function(key_size_distances){
+  Challenge6.prototype.key_size_result = function(key_size_distances){
     var min_item = key_size_distances.min_item();
     var chart_el = this.challengeElement().find('.chart');
     min_item.highlight = true;
@@ -38,7 +38,7 @@ define(['text!/example_data/set1challenge6.txt',
     return min_item.index;
   };
 
-  Set1Challenge6.prototype.get_key_size_distances = function(inp){
+  Challenge6.prototype.get_key_size_distances = function(inp){
     var key_size_distances = new Histogram(this.key_size_min, this.key_size_max);
     var key_size;
     for(key_size = this.key_size_min; key_size < this.key_size_max; key_size++){
@@ -51,6 +51,6 @@ define(['text!/example_data/set1challenge6.txt',
     return key_size_distances;
   };
 
-  return Set1Challenge6;
+  return Challenge6;
 
 });

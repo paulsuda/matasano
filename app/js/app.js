@@ -1,7 +1,7 @@
 'use strict';
 
 define(['text', 'jquery', 'foundation', 'challenge/1', 'challenge/2', 'challenge/3', 'challenge/4', 'challenge/5', 'challenge/6'],
-  function(text, jQuery, foundation, Set1Challenge1, Set1Challenge2, Set1Challenge3, Set1Challenge4, Set1Challenge5, Set1Challenge6){
+  function(text, jQuery, foundation, Challenge1, Challenge2, Challenge3, Challenge4, Challenge5, Challenge6){
 
 	var app = (function(document, $) {
 		// TODO, weird format here. Redo?
@@ -31,14 +31,14 @@ define(['text', 'jquery', 'foundation', 'challenge/1', 'challenge/2', 'challenge
             alert('No content partial found for: ' + challenge_id);
             challenge_container.html('<h1 class="error">failed loading</h1>');
           };
-          require(['text!/partials/' + challenge_id + '.html'],
+          require(['text!/partials/challenge/' + challenge_id + '.html'],
             successCallback, failCallback);
 				}
 			},
 			_switch_challenge_by_state = function(){
 				var hash = window.location.hash;
 				hash = hash.substring(1);
-				if(!hash) hash = 'set1challenge1';
+				if(!hash) hash = '1';
 				app.switch_challenge(hash);
 			},
 			_register_challenge = function(challenge_instance) {
@@ -58,12 +58,12 @@ define(['text', 'jquery', 'foundation', 'challenge/1', 'challenge/2', 'challenge
 		};
 	})(document, jQuery);
 
-	app.register_challenge(new Set1Challenge1());
-	app.register_challenge(new Set1Challenge2());
-	app.register_challenge(new Set1Challenge3());
-	app.register_challenge(new Set1Challenge4());
-	app.register_challenge(new Set1Challenge5());
-	app.register_challenge(new Set1Challenge6());
+	app.register_challenge(new Challenge1());
+	app.register_challenge(new Challenge2());
+	app.register_challenge(new Challenge3());
+	app.register_challenge(new Challenge4());
+	app.register_challenge(new Challenge5());
+	app.register_challenge(new Challenge6());
 
 	window.onpopstate = function (event) {
 		app.switch_challenge_by_state();

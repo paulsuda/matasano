@@ -2,8 +2,8 @@
 
 define(['challenge/xor_base'], function(ChallengeXORBase){
 
-  function Set1Challenge4(){
-    ChallengeXORBase.apply(this,['set1challenge4']);
+  function Challenge4(){
+    ChallengeXORBase.apply(this,['4']);
     var thisObj = this;
     var defaultStartKey = '53';
     this.hex_list = null;
@@ -11,7 +11,7 @@ define(['challenge/xor_base'], function(ChallengeXORBase){
       'loading...',
       defaultStartKey
     ]);
-    $.get('/example_data/set1challenge4.txt', function(hex_list_data){
+    $.get('/example_data/challenge4.txt', function(hex_list_data){
       /* Get data newline separated. */
       this.hex_list = hex_list_data.split("\n");
       /* Set defaults from file input. */
@@ -23,9 +23,9 @@ define(['challenge/xor_base'], function(ChallengeXORBase){
     return this;
   }
 
-  Set1Challenge4.prototype = Object.create(ChallengeXORBase.prototype);
+  Challenge4.prototype = Object.create(ChallengeXORBase.prototype);
 
-  Set1Challenge4.prototype.autoScan = function(){
+  Challenge4.prototype.autoScan = function(){
     var e = this.challengeElement();
     var el = e.find('.input-field.xor-key');
     /* For each hex encoded item to try... */
@@ -63,6 +63,6 @@ define(['challenge/xor_base'], function(ChallengeXORBase){
     el.val(final_result.best_key);
   };
 
-  return Set1Challenge4;
+  return Challenge4;
 
 });
