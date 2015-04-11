@@ -82,14 +82,12 @@ define(['jquery'], function($){
   };
 
   ChallengeBase.prototype.progressLog = function(message){
-    //console.log("progress: " + message);
     this.log_messages.push(message);
   };
 
   ChallengeBase.prototype.flushLog = function(show = true){
     var messages = this.log_messages;
-    if(show && (messages.length > 0))
-      console.log(messages.join("\n"));
+    if(show && (messages.length > 0)) console.log(messages.join("\n"));
     this.log_messages = [];
     return messages;s
   };

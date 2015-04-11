@@ -5,7 +5,6 @@ define(['challenge/base', 'scoring/english_words', 'recode/strip_whitespace', 'd
 
   function ChallengeXORBase(challenge_id){
     ChallengeBase.apply(this,arguments);
-    this.setupScanButton();
     this.scoreEnglish = new ScoreEnglishWords();
   }
 
@@ -15,11 +14,17 @@ define(['challenge/base', 'scoring/english_words', 'recode/strip_whitespace', 'd
 
   };
 
+  ChallengeXORBase.prototype.setupInputEvent = function(){
+    ChallengeBase.prototype.setupInputEvent.apply(this, arguments);
+    this.setupScanButton();
+  };
+
   ChallengeXORBase.prototype.setupScanButton = function(){
     var e = this.challengeElement();
     /* Get special form elements, assign auto button action. */
     var thisObj = this;
-    e.find('.button-auto').click(function(){
+    e.find('.button-auto').click(function(event){
+      event.preventDefault();
       thisObj.autoScan();
     });
   };
