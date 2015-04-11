@@ -11,7 +11,6 @@ define(['challenge/base', 'scoring/english_words', 'recode/strip_whitespace', 'd
   ChallengeXORBase.prototype = Object.create(ChallengeBase.prototype);
 
   ChallengeXORBase.prototype.readDataFile = function(){
-
   };
 
   ChallengeXORBase.prototype.setupInputEvent = function(){
@@ -73,8 +72,16 @@ define(['challenge/base', 'scoring/english_words', 'recode/strip_whitespace', 'd
     var el = e.find('.input-field.xor-key');
     var input_data = this.challengeElement().find('.input-field:first').val();
     var scan_result = this.autoScanData(input_data);
+    var original_bg = el.css('background-color');
     this.progressLog("RESULT: Best key " + scan_result.best_key + " scored " + scan_result.best_score);
-    el.val(scan_result.best_key);
+    /* Set background to highlight, then set once handler to return it back. */
+    el.
+      css('background-color', 'yellow').
+      val(scan_result.best_key).
+      one('change', function(){
+        el.css('background-color', original_bg);
+      });
+
   };
 
   return ChallengeXORBase;
