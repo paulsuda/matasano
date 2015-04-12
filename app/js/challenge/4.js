@@ -25,23 +25,18 @@ define(['challenge/xor_base'], function(ChallengeXORBase){
 
   Challenge4.prototype = Object.create(ChallengeXORBase.prototype);
 
-  Challenge4.prototype.autoScan = function(){
-    var e = this.challengeElement();
-    var el = e.find('.input-field.xor-key');
+  Challenge4.prototype.autoScanGetResult = function(input_data){
     /* For each hex encoded item to try... */
-    var input_data = this.challengeElement().find('.input-field:first').val();
     var hex_list = input_data.split("\n");
     var thisObj = this;
     var key_results = {};
-    /* Scan each input and find best key along with score. */
+    /* Scan each input and find best key along with score. Limit long input. */
     hex_list = hex_list.slice(0, 500);
     _.each(hex_list, function(hex_item, index){
       /* Get score for this snippet, don't do extensive logging..  */
       var save_log = thisObj.log_messages;
       var scan_result = thisObj.autoScanData(hex_item.trim());
       thisObj.log_messages = save_log;
-      /* Call super class. */
-      //ChallengeXORBase.apply(thisObj, arguments);
       /* Get score */
       key_results[hex_item] = scan_result;
       thisObj.progressLog("HEX ITEM: " + hex_item + "best key: " +
@@ -60,7 +55,7 @@ define(['challenge/xor_base'], function(ChallengeXORBase){
       " scored " + final_result.best_score +
       " for data " + final_result.input_data +
       " with output " + final_result.best_output);
-    el.val(final_result.best_key);
+    return final_result.best_key;
   };
 
   return Challenge4;

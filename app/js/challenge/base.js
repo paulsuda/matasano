@@ -89,7 +89,7 @@ define(['jquery'], function($){
     var messages = this.log_messages;
     if(show && (messages.length > 0)) console.log(messages.join("\n"));
     this.log_messages = [];
-    return messages;s
+    return messages;
   };
 
   return ChallengeBase;

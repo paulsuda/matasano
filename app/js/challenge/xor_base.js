@@ -67,17 +67,24 @@ define(['challenge/base', 'scoring/english_words', 'recode/strip_whitespace', 'd
     };
   };
 
+  /**
+   * Takes input data, returns best guess xor key.
+   */
+  ChallengeXORBase.prototype.autoScanGetResult = function(input_data){
+    throw "Derived class should define autoScanGetResult().";
+  };
+
   ChallengeXORBase.prototype.autoScan = function(){
     var e = this.challengeElement();
     var el = e.find('.input-field.xor-key');
-    var input_data = this.challengeElement().find('.input-field:first').val();
-    var scan_result = this.autoScanData(input_data);
+    var input_data = e.find('.input-field:first').val();
     var original_bg = el.css('background-color');
-    this.progressLog("RESULT: Best key " + scan_result.best_key + " scored " + scan_result.best_score);
+    /* Get the result from the challenge class. */
+    var result_value = this.autoScanGetResult(input_data);
     /* Set background to highlight, then set once handler to return it back. */
     el.
       css('background-color', 'yellow').
-      val(scan_result.best_key).
+      val(result_value).
       one('change', function(){
         el.css('background-color', original_bg);
       });

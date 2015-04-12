@@ -13,6 +13,12 @@ define(['challenge/xor_base'], function(ChallengeXORBase){
 
   Challenge3.prototype = Object.create(ChallengeXORBase.prototype);
 
+  Challenge3.prototype.autoScanGetResult = function(input_data){
+    var scan_result = this.autoScanData(input_data);
+    this.progressLog("RESULT: Best key " + scan_result.best_key + " scored " + scan_result.best_score);
+    return scan_result.best_key;
+  };
+
   return Challenge3;
 
 });
